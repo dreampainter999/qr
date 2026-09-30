@@ -38,6 +38,14 @@
   .slide{position:absolute;left:50%;top:18px;width:84%;height:360px;display:flex;align-items:flex-end;justify-content:center;
     transform-origin:50% 88%;will-change:transform,opacity}
   .slide.anim{transition:transform .38s cubic-bezier(.2,.7,.2,1),opacity .38s}
+  .zm{width:100%;height:100%;display:flex;align-items:flex-end;justify-content:center;transform-origin:0 0;will-change:transform}
+  .zm.ease{transition:transform .25s ease-out}
+  .stage.zoomed{touch-action:none;cursor:move}
+  .stage.zoomed .slide:not(.center){opacity:0!important}
+  .zreset{position:absolute;right:10px;bottom:10px;z-index:300;border:1px solid var(--line);background:rgba(255,255,255,.95);
+    color:var(--navy);font:inherit;font-size:12px;font-weight:700;padding:7px 12px;border-radius:16px;cursor:pointer;display:none}
+  .stage.zoomed .zreset{display:block}
+  .stage.zoomed .arrow{display:none}
   .slide img,.slide svg{max-width:100%;max-height:100%;display:block;pointer-events:none;-webkit-user-drag:none}
   .arrow{position:absolute;top:50%;transform:translateY(-50%);width:36px;height:36px;border-radius:50%;
     border:1px solid var(--line);background:rgba(255,255,255,.92);color:var(--navy);font-size:18px;line-height:1;
@@ -104,9 +112,10 @@
 <section class="stage" id="stage" aria-roledescription="carousel" aria-label="의자 모델">
   <button class="arrow prev" id="prev" aria-label="이전 의자">‹</button>
   <button class="arrow next" id="next" aria-label="다음 의자">›</button>
+  <button class="zreset" id="zreset">원래 크기</button>
 </section>
 <div class="nav"><div class="dots" id="dots"></div></div>
-<p class="hint" id="hint">옆으로 넘기면 다른 의자 스펙을 볼 수 있습니다</p>
+<p class="hint" id="hint">옆으로 넘기면 다른 의자, 두 손가락으로 벌리면 확대</p>
 
 <main class="spec" id="spec" aria-live="polite"></main>
 
@@ -365,7 +374,7 @@ var CHAIRS = [
     el.className = 'slide';
     el.setAttribute('role','group');
     el.setAttribute('aria-label', ch.name);
-    el.innerHTML = (ch.img ? '<img alt="'+esc(ch.name)+'" src="'+esc(ch.img)+'">' : sketch(ch.shape));
+    el.innerHTML = '<div class="zm">' + (ch.img ? '<img alt="'+esc(ch.name)+'" src="'+esc(ch.img)+'">' : sketch(ch.shape)) + '</div>';
     var im = el.querySelector('img');
     if(im) im.onerror = function(){ im.outerHTML = sketch(ch.shape); };
     el.addEventListener('click', function(){ if(!moved && i!==cs) step(wrapM(i - cs)); });
@@ -405,6 +414,7 @@ var CHAIRS = [
       el.style.opacity = op;
       el.style.zIndex = String(100 - Math.round(a * 10));
       el.setAttribute('aria-hidden', o === 0 ? 'false' : 'true');
+      el.classList.toggle('center', o === 0);
     });
   }
 
@@ -500,6 +510,7 @@ var CHAIRS = [
   document.addEventListener('touchend', unlock, {passive:true});   // 아이폰 소리 잠금 해제용
 
   function step(d, px){          // 무대를 d칸 이동 (px: 소리 낼 남은 거리)
+    if(d !== 0) resetZoom(false);
     if(d !== 0) tick(0);        // 의자가 한 칸 넘어갈 때 '딸깍' 한 번
     drag = 0;
     if(d === 0){ layout(true); return; }
@@ -525,14 +536,71 @@ var CHAIRS = [
     if(e.key === 'ArrowRight') step(1);
   });
 
-  /* 손가락 스와이프 (세로 스크롤과 구분) */
-  var sx = 0, sy = 0, axis = null, pid = null, lastTickAt = 0;
+  /* ---------- 확대 (두 손가락 벌리기 · 두 번 탭) ---------- */
+  var ZMAX = 4, z = 1, tx = 0, ty = 0;
+  var zBtn = document.getElementById('zreset');
+  function zoomEl(){ return slides[cs].querySelector('.zm'); }
+  function applyZoom(ease){
+    var el = zoomEl();
+    el.classList.toggle('ease', !!ease && !reduce);
+    el.style.transform = 'translate(' + tx + 'px,' + ty + 'px) scale(' + z + ')';
+    stage.classList.toggle('zoomed', z > 1.001);
+  }
+  function clampPan(){
+    var el = zoomEl(), W = el.offsetWidth, H = el.offsetHeight;
+    tx = Math.min(0, Math.max(W * (1 - z), tx));
+    ty = Math.min(0, Math.max(H * (1 - z), ty));
+  }
+  function resetZoom(ease){
+    if(z === 1 && tx === 0 && ty === 0) return;
+    z = 1; tx = 0; ty = 0; applyZoom(ease);
+  }
+  function local(x, y){ var r = zoomEl().parentElement.getBoundingClientRect(); return { x: x - r.left, y: y - r.top }; }
+  zBtn.onclick = function(e){ e.stopPropagation(); resetZoom(true); };
+  stage.addEventListener('gesturestart', function(e){ e.preventDefault(); });   // 아이폰 화면 전체 확대 방지
+
+  /* ---------- 손가락 입력 (넘기기 / 확대 / 이동) ---------- */
+  var pts = {}, cnt = 0;
+  var mode = null;            // 'swipe' | 'pinch' | 'pan'
+  var sx = 0, sy = 0, axis = null, pid = null;
+  var p0 = null, pinch0 = null, lastTap = { t: 0, x: 0, y: 0 };
+
+  function two(){ var k = Object.keys(pts); return [pts[k[0]], pts[k[1]]]; }
+  function startPan(e){ mode = 'pan'; pid = e.pointerId; try{ stage.setPointerCapture(pid); }catch(_){} p0 = { x: e.clientX, y: e.clientY, tx: tx, ty: ty }; }
+  function startPinch(){
+    var q = two(), m = local((q[0].x + q[1].x) / 2, (q[0].y + q[1].y) / 2);
+    pinch0 = { d: Math.hypot(q[0].x - q[1].x, q[0].y - q[1].y) || 1, z: z, cx: (m.x - tx) / z, cy: (m.y - ty) / z };
+    mode = 'pinch';
+    if(drag !== 0){ drag = 0; layout(true); }
+    stage.classList.remove('dragging');
+  }
+
   stage.addEventListener('pointerdown', function(e){
-    if(e.target.closest('.arrow')) return;
-    sx = e.clientX; sy = e.clientY; axis = null; moved = false; pid = e.pointerId; lastTick = 0;
+    if(e.target.closest('.arrow,.zreset')) return;
+    pts[e.pointerId] = { x: e.clientX, y: e.clientY }; cnt = Object.keys(pts).length;
+    if(cnt === 2){ Object.keys(pts).forEach(function(k){ try{ stage.setPointerCapture(+k); }catch(_){} }); startPinch(); moved = true; return; }
+    if(cnt > 2) return;
+    moved = false;
+    if(z > 1.001){ startPan(e); return; }
+    mode = 'swipe'; sx = e.clientX; sy = e.clientY; axis = null; pid = e.pointerId;
   });
+
   stage.addEventListener('pointermove', function(e){
-    if(pid !== e.pointerId) return;
+    if(!pts[e.pointerId]) return;
+    pts[e.pointerId] = { x: e.clientX, y: e.clientY };
+    if(mode === 'pinch' && cnt >= 2){
+      var q = two(), m = local((q[0].x + q[1].x) / 2, (q[0].y + q[1].y) / 2);
+      var d = Math.hypot(q[0].x - q[1].x, q[0].y - q[1].y);
+      z = Math.min(ZMAX, Math.max(0.8, pinch0.z * d / pinch0.d));
+      tx = m.x - z * pinch0.cx; ty = m.y - z * pinch0.cy;
+      applyZoom(false); return;
+    }
+    if(mode === 'pan' && e.pointerId === pid){
+      var mx = e.clientX - p0.x, my = e.clientY - p0.y;
+      if(Math.abs(mx) + Math.abs(my) > 6) moved = true;
+      tx = p0.tx + mx; ty = p0.ty + my; clampPan(); applyZoom(false); return;
+    }
+    if(mode !== 'swipe' || e.pointerId !== pid) return;
     var dx = e.clientX - sx, dy = e.clientY - sy;
     if(!axis){
       if(Math.abs(dx) < 8 && Math.abs(dy) < 8) return;
@@ -544,19 +612,53 @@ var CHAIRS = [
     drag = dx;
     layout(false);
   });
+
   function end(e){
-    if(pid !== e.pointerId) return;
-    pid = null;
-    stage.classList.remove('dragging');
-    if(axis === 'x'){
-      var th = stage.clientWidth * 0.12;
-      var W = stage.clientWidth * STEP;
-      if(drag < -th) step(1, W - Math.abs(drag));
-      else if(drag > th) step(-1, W - Math.abs(drag));
-      else { drag = 0; layout(true); }
+    if(!pts[e.pointerId]) return;
+    delete pts[e.pointerId]; cnt = Object.keys(pts).length;
+
+    if(mode === 'pinch'){
+      if(cnt >= 2) return;
+      if(z < 1.05){ resetZoom(true); mode = null; }
+      else {
+        clampPan(); applyZoom(true);
+        if(cnt === 1){ var k = Object.keys(pts)[0]; startPan({ pointerId: +k, clientX: pts[k].x, clientY: pts[k].y }); }
+        else mode = null;
+      }
       setTimeout(function(){ moved = false; }, 0);
+      return;
     }
-    axis = null;
+    if(mode === 'pan'){
+      if(cnt === 0){
+        if(!moved) doubleTap(e);
+        mode = null; setTimeout(function(){ moved = false; }, 0);
+      }
+      return;
+    }
+    if(mode === 'swipe' && e.pointerId === pid){
+      stage.classList.remove('dragging');
+      if(axis === 'x'){
+        var th = stage.clientWidth * 0.12;
+        var W = stage.clientWidth * STEP;
+        if(drag < -th) step(1, W - Math.abs(drag));
+        else if(drag > th) step(-1, W - Math.abs(drag));
+        else { drag = 0; layout(true); }
+        setTimeout(function(){ moved = false; }, 0);
+      } else if(!axis){
+        doubleTap(e);
+      }
+      axis = null; mode = null; pid = null;
+    }
+  }
+  function doubleTap(e){          // 가운데 의자를 두 번 탭하면 2.5배 / 원래 크기
+    var r = slides[cs].getBoundingClientRect();
+    if(e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom){ lastTap.t = 0; return; }
+    var now = Date.now();
+    if(now - lastTap.t < 320 && Math.hypot(e.clientX - lastTap.x, e.clientY - lastTap.y) < 30){
+      lastTap.t = 0;
+      if(z > 1.001) resetZoom(true);
+      else { var p = local(e.clientX, e.clientY); z = 2.5; tx = p.x - z * p.x; ty = p.y - z * p.y; clampPan(); applyZoom(true); }
+    } else lastTap = { t: now, x: e.clientX, y: e.clientY };
   }
   stage.addEventListener('pointerup', end);
   stage.addEventListener('pointercancel', end);
