@@ -101,6 +101,10 @@
   .subtitle{animation:pulse 1.8s ease-in-out infinite}
   body.intro .subtitle{color:var(--navy);font-size:17px}
   body.intro .hint{display:none}
+  .introimg{display:none;position:absolute;left:16px;right:16px;top:8px;bottom:8px;width:calc(100% - 32px);height:calc(100% - 16px);
+    object-fit:contain;z-index:150;pointer-events:none;-webkit-user-drag:none}
+  body.intro .stage.withintro .introimg{display:block}
+  body.intro .stage.withintro .slide,body.intro .stage.withintro .arrow{visibility:hidden}
   @keyframes pulse{0%,100%{opacity:1}50%{opacity:.45}}
   @media (prefers-reduced-motion:reduce){ .subtitle{animation:none} }
 
@@ -372,6 +376,14 @@ var CHAIRS = [
   var titleBox = document.getElementById('title');
   var subBox = document.getElementById('subtitle');
   var homeBtn = document.getElementById('homeBtn');
+  /* 인트로 라인업 이미지 (못 불러오면 회전 무대를 그대로 보여줌) */
+  var introImg = document.createElement('img');
+  introImg.className = 'introimg';
+  introImg.alt = '백두 ESD 클린룸 의자 라인업';
+  introImg.onerror = function(){ stage.classList.remove('withintro'); introImg.remove(); };
+  introImg.src = IMG + 'QR_intropage.png';
+  stage.appendChild(introImg);
+  stage.classList.add('withintro');
   var HINT = '옆으로 넘기면 다른 의자, 두 손가락으로 벌리면 확대';
   var intro = true;                         // 처음엔 인트로 화면
   document.body.classList.add('intro');
