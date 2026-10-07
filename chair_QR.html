@@ -90,7 +90,15 @@
     text-decoration:none;font-size:15px;font-weight:700}
   .bar .tel{background:var(--navy);color:#fff}
   .bar .ask{background:#fff;color:var(--navy);border:1.5px solid var(--navy)}
-  .bar svg{width:17px;height:17px}
+  .bar svg{width:17px;height:17px;flex:0 0 auto}
+  .bar a{font-size:14px;gap:5px}
+  .bar .home{background:#fff;color:var(--navy);border:1.5px solid var(--navy)}
+  body.intro .dots{visibility:hidden}
+  body.intro .spec{display:none}
+  body.intro .title{font-family:var(--ko);font-size:31px;letter-spacing:-.5px}
+  body.intro .hint{white-space:pre;color:var(--navy);font-size:17px;font-weight:700;animation:pulse 1.8s ease-in-out infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.45}}
+  @media (prefers-reduced-motion:reduce){ body.intro .hint{animation:none} }
 
   @media (min-width:600px){ .title,.stage,.nav,.hint,.spec{max-width:520px;margin-left:auto;margin-right:auto} .top{max-width:520px;margin:0 auto} }
   @media (prefers-reduced-motion:reduce){ .slide.anim,.spec,.title,.dots button{transition:none} }
@@ -121,6 +129,10 @@
 <main class="spec" id="spec" aria-live="polite"></main>
 
 <nav class="bar">
+  <a class="home" id="homeBtn" href="#">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M10 21v-6h4v6"/></svg>
+    홈페이지
+  </a>
   <a class="tel" id="telBtn" href="#">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg>
     전화 문의
@@ -138,6 +150,9 @@
 var CONFIG = {
   tel: '031-574-9900',
   askUrl: 'https://baekdoo2514.cafe24.com/default/qna/qna_1.php?tit=04&sub=01',
+  homeUrl: 'https://www.baekdoo.com/default/product/product_1.php?tit=03&sub=01&com_board_category_code=c9', // 인트로·링크 없는 의자의 홈페이지 버튼
+  introTitle: '백두 ESD 의자',
+  introHint: '◀  터치하면 돌려볼 수 있습니다  ▶',
   note: '표기된 사양은 생산 로트에 따라 다소 차이가 있을 수 있습니다.'
 };
 
@@ -149,13 +164,15 @@ var CONFIG = {
    - specs   : [항목, 내용] 목록 — 의자마다 자유롭게
    - heights : [실린더, A, B] 목록 — 없으면 높이표 숨김
    - note    : 의자별 안내 문구 (선택)
+   - home    : 이 의자의 홈페이지 상세 주소 (없으면 ESD 의자 목록으로 연결)
    ===================================================================== */
 var IMG = 'https://baekdoo2514.cafe24.com/bizdemo165462/img/product/';
 var GND = '그라운드 바퀴로 안정적으로 접지';
 
 var CHAIRS = [
   /* ---------- 사무·작업형 ---------- */
-  { id:'ESD-PROMAX', name:'ESD-PROMAX', shape:'office', img:IMG+'promax_01.png',
+  { id:'ESD-PROMAX',
+    home:'https://www.baekdoo.com/default/product/product_1.php?com_board_basic=read_form&com_board_idx=211&tit=03&sub=01&&com_board_search_code=&com_board_search_value1=&com_board_search_value2=&com_board_page=&&com_board_id=7&', name:'ESD-PROMAX', shape:'office', img:IMG+'promax_01.png',
     specs:[
       ['시트','ESD 레쟈 표면저항 10⁵~10⁶ Ω, HR 스폰지'],
       ['전기저항치','표면저항 10⁵~10⁶ Ω, 체적저항 10⁵~10⁷ Ω'],
@@ -169,7 +186,8 @@ var CHAIRS = [
       ['등판 (가로×세로)','480 × 520 mm'],
       ['좌판 (가로×세로)','570 × 480 mm'] ] },
 
-  { id:'ESD-MAESTRO', name:'ESD-MAESTRO', shape:'office', img:IMG+'CHAIR-M.png',
+  { id:'ESD-MAESTRO',
+    home:'https://www.baekdoo.com/default/product/product_1.php?com_board_basic=read_form&com_board_idx=209&tit=03&sub=01&&com_board_search_code=&com_board_search_value1=&com_board_search_value2=&com_board_page=&&com_board_id=7&&com_board_category_code=c9&com_board_category_code=c9&com_board_category_code=c9&com_board_category_code=c9&com_board_category_code=c9&com_board_category_code=c9&com_board_id=7', name:'ESD-MAESTRO', shape:'office', img:IMG+'CHAIR-M.png',
     specs:[
       ['시트','ESD 레쟈 표면저항 10⁵~10⁶ Ω, HR 스폰지'],
       ['프레임','크롬도금 스틸 프레임'],
@@ -184,7 +202,8 @@ var CHAIRS = [
       ['좌판 (가로×세로)','450 × 400 mm'] ],
     heights:[['200','350','450'],['250','410','560'],['310','480','680'],['370','560','820']] },
 
-  { id:'ESD-MAESTRO-UP', name:'ESD-MAESTRO-UP', shape:'office', img:IMG+'CHAIR-MUP1.png',
+  { id:'ESD-MAESTRO-UP',
+    home:'https://www.baekdoo.com/default/product/product_1.php?com_board_basic=read_form&com_board_idx=208&tit=03&sub=01&&com_board_search_code=&com_board_search_value1=&com_board_search_value2=&com_board_page=&&com_board_id=7&', name:'ESD-MAESTRO-UP', shape:'office', img:IMG+'CHAIR-MUP1.png',
     specs:[
       ['시트','ESD 레쟈 표면저항 10⁵~10⁶ Ω, HR 스폰지'],
       ['프레임','크롬도금 스틸 프레임'],
@@ -199,7 +218,8 @@ var CHAIRS = [
       ['좌판 (가로×세로)','450 × 400 mm'] ],
     heights:[['200','350','450'],['250','410','560'],['310','480','680'],['370','560','820']] },
 
-  { id:'ESD-BESTA', name:'ESD-베스타', shape:'office', img:IMG+'CHAIR-BESTA-1.png',
+  { id:'ESD-BESTA',
+    home:'https://www.baekdoo.com/default/product/product_1.php?com_board_basic=read_form&com_board_idx=210&tit=03&sub=01&&com_board_search_code=&com_board_search_value1=&com_board_search_value2=&com_board_page=&&com_board_id=7&&com_board_id=7', name:'ESD-베스타', shape:'office', img:IMG+'CHAIR-BESTA-1.png',
     specs:[
       ['시트','ESD 레쟈 표면저항 10⁴~10⁸ Ω, PU 발포우레탄 스폰지'],
       ['프레임','크롬도금 스틸 프레임'],
@@ -214,7 +234,8 @@ var CHAIRS = [
     heights:[['200','390','480'],['250','440','600'],['310','510','700'],['370','590','830']] },
 
   /* ---------- 라인·실험실형 ---------- */
-  { id:'ESD-PUREBACK', name:'ESD-퓨어백', shape:'office', img:IMG+'CHAIR-P.png',
+  { id:'ESD-PUREBACK',
+    home:'https://www.baekdoo.com/default/product/product_1.php?com_board_basic=read_form&com_board_idx=145&tit=03&sub=01&&com_board_search_code=&com_board_search_value1=&com_board_search_value2=&com_board_page=&&com_board_id=7&&com_board_category_code=c9&com_board_category_code=c9&com_board_category_code=c9&com_board_category_code=c9&com_board_category_code=c9&com_board_category_code=c9&com_board_category_code=c9&com_board_category_code=c9&com_board_id=7', name:'ESD-퓨어백', shape:'office', img:IMG+'CHAIR-P.png',
     specs:[
       ['시트','ESD 레쟈 표면저항 10⁵~10⁶ Ω, PU 발포 성형 우레탄 스폰지'],
       ['프레임','크롬도금 스틸 프레임'],
@@ -229,7 +250,8 @@ var CHAIRS = [
       ['좌판 (가로×세로)','480 × 430 mm'] ],
     heights:[['200','400','510'],['250','450','590'],['310','500','710'],['370','590','850']] },
 
-  { id:'ESD-CHARMING2', name:'ESD-차밍 II', shape:'office', img:IMG+'CHAIR-C2.png',
+  { id:'ESD-CHARMING2',
+    home:'https://www.baekdoo.com/default/product/product_1.php?com_board_basic=read_form&com_board_idx=141&tit=03&sub=01&&com_board_search_code=&com_board_search_value1=&com_board_search_value2=&com_board_page=2&&com_board_id=7&&com_board_category_code=c9&com_board_id=7', name:'ESD-차밍 II', shape:'office', img:IMG+'CHAIR-C2.png',
     specs:[
       ['시트','ESD 레쟈 표면저항 10⁵~10⁶ Ω, HR 스폰지'],
       ['프레임','크롬도금 스틸 프레임'],
@@ -244,7 +266,8 @@ var CHAIRS = [
       ['좌판 (가로×세로)','480 × 430 mm'] ],
     heights:[['200','400','490'],['250','440','590'],['310','510','710'],['370','570','820']] },
 
-  { id:'ESD-BLOOMING', name:'ESD-블루밍', shape:'office', img:IMG+'CHAIR-B.png',
+  { id:'ESD-BLOOMING',
+    home:'https://www.baekdoo.com/default/product/product_1.php?com_board_basic=read_form&com_board_idx=138&tit=03&sub=01&&com_board_search_code=&com_board_search_value1=&com_board_search_value2=&com_board_page=2&&com_board_id=7&', name:'ESD-블루밍', shape:'office', img:IMG+'CHAIR-B.png',
     specs:[
       ['시트','ESD 레쟈 표면저항 10⁵~10⁶ Ω, HR 스폰지'],
       ['체어 바디','전도성 엔지니어링 플라스틱'],
@@ -259,7 +282,8 @@ var CHAIRS = [
       ['좌판 (가로×세로)','450 × 400 mm'] ],
     heights:[['200','350','450'],['250','410','560'],['310','480','680'],['370','560','820']] },
 
-  { id:'ESD-BLOOMING-NP', name:'ESD-블루밍 NP', shape:'office', img:IMG+'CHAIR-BNP.png',
+  { id:'ESD-BLOOMING-NP',
+    home:'https://www.baekdoo.com/default/product/product_1.php?com_board_basic=read_form&com_board_idx=136&tit=03&sub=01&&com_board_search_code=&com_board_search_value1=&com_board_search_value2=&com_board_page=2&&com_board_id=7&&com_board_category_code=c9&com_board_category_code=c9&com_board_category_code=c9&com_board_category_code=c9&com_board_id=7', name:'ESD-블루밍 NP', shape:'office', img:IMG+'CHAIR-BNP.png',
     specs:[
       ['체어 바디','전도성 엔지니어링 플라스틱'],
       ['너킹','알루미늄 다이캐스팅 너킹'],
@@ -274,7 +298,8 @@ var CHAIRS = [
     heights:[['200','350','450'],['250','410','560'],['310','480','680'],['370','560','820']] },
 
   /* ---------- 원형 스툴 ---------- */
-  { id:'ESD-CIRCLE', name:'ESD-원형', shape:'stool', img:IMG+'CHAIR-C.png',
+  { id:'ESD-CIRCLE',
+    home:'https://www.baekdoo.com/default/product/product_1.php?com_board_basic=read_form&com_board_idx=143&tit=03&sub=01&&com_board_search_code=&com_board_search_value1=&com_board_search_value2=&com_board_page=&&com_board_id=7&&com_board_category_code=c9&com_board_category_code=c9&com_board_category_code=c9&com_board_category_code=c9&com_board_category_code=c9&com_board_category_code=c9&com_board_category_code=c9&com_board_category_code=c9&com_board_category_code=c9&com_board_id=7', name:'ESD-원형', shape:'stool', img:IMG+'CHAIR-C.png',
     specs:[
       ['시트','ESD 레쟈 표면저항 10⁵~10⁶ Ω, HR 스폰지'],
       ['프레임','크롬도금 스틸 프레임'],
@@ -288,7 +313,8 @@ var CHAIRS = [
       ['좌판','Ø 390 mm'] ],
     heights:[['200','400','490'],['250','450','590'],['310','500','700'],['370','590','830']] },
 
-  { id:'ESD-ROUND-NP1', name:'ESD ROUND-NP1', shape:'stool', img:IMG+'round_01.png',
+  { id:'ESD-ROUND-NP1',
+    home:'https://www.baekdoo.com/default/product/product_1.php?com_board_basic=read_form&com_board_idx=212&tit=03&sub=01&&com_board_search_code=&com_board_search_value1=&com_board_search_value2=&com_board_page=&&com_board_id=7&&com_board_category_code=c9&com_board_category_code=c9&com_board_category_code=c9&com_board_id=7', name:'ESD ROUND-NP1', shape:'stool', img:IMG+'round_01.png',
     specs:[
       ['시트','ESD 엔지니어링 플라스틱 일체형 성형'],
       ['표면저항','10⁴~10⁸ Ω'],
@@ -300,7 +326,8 @@ var CHAIRS = [
       ['좌판','Ø 390 mm'],
       ['높이','400~830 mm (실린더 사양별)'] ] },
 
-  { id:'ESD-ROUND-FIX', name:'ESD ROUND-FIX', shape:'stool', img:IMG+'roundfix_01.png',
+  { id:'ESD-ROUND-FIX',
+    home:'https://www.baekdoo.com/default/product/product_1.php?com_board_basic=read_form&com_board_idx=214&tit=03&sub=01&&com_board_search_code=&com_board_search_value1=&com_board_search_value2=&com_board_page=&&com_board_id=7&', name:'ESD ROUND-FIX', shape:'stool', img:IMG+'roundfix_01.png',
     specs:[
       ['모델','ROUND-FIX 280 / ROUND-FIX 480'],
       ['시트','ESD 레쟈 표면저항 10⁶~10⁷ Ω, HR 스폰지'],
@@ -311,14 +338,16 @@ var CHAIRS = [
       ['베이스','링 Ø 380 mm'] ] },
 
   /* ---------- 로우 타입 ---------- */
-  { id:'ESD-LOWMING', name:'ESD-로우밍', shape:'low', img:IMG+'CHAIR-R.png',
+  { id:'ESD-LOWMING',
+    home:'https://www.baekdoo.com/default/product/product_1.php?com_board_basic=read_form&com_board_idx=137&tit=03&sub=01&&com_board_search_code=&com_board_search_value1=&com_board_search_value2=&com_board_page=2&&com_board_id=7&&com_board_category_code=c9&com_board_category_code=c9&com_board_category_code=c9&com_board_id=7', name:'ESD-로우밍', shape:'low', img:IMG+'CHAIR-R.png',
     specs:[
       ['시트','ESD 레쟈 표면저항 10⁵~10⁶ Ω'],
       ['시트 스폰지','HR 스폰지 (15T)'],
       ['너킹','알루미늄 다이캐스팅 너킹'],
       ['전기저항치','표면저항 10⁵~10⁶ Ω, 체적저항 10⁵~10⁷ Ω'] ] },
 
-  { id:'ESD-LOWMING1', name:'ESD-로우밍 I', shape:'low', img:IMG+'CHAIR-R1.png',
+  { id:'ESD-LOWMING1',
+    home:'https://www.baekdoo.com/default/product/product_1.php?com_board_basic=read_form&com_board_idx=134&tit=03&sub=01&&com_board_search_code=&com_board_search_value1=&com_board_search_value2=&com_board_page=2&&com_board_id=7&&com_board_category_code=c9&com_board_category_code=c9&com_board_category_code=c9&com_board_category_code=c9&com_board_category_code=c9&com_board_category_code=c9&com_board_id=7', name:'ESD-로우밍 I', shape:'low', img:IMG+'CHAIR-R1.png',
     specs:[
       ['등판','ESD PU 레쟈 (저항 10⁵~10⁸ Ω) + 쿠션 폼'],
       ['좌판','ESD PU 레쟈 (저항 10⁵~10⁸ Ω) + 쿠션 폼'],
@@ -329,7 +358,8 @@ var CHAIRS = [
     note:'상세 스펙은 정리 중입니다. 자세한 사양은 문의해 주세요.' },
 
   /* ---------- 기타 ---------- */
-  { id:'PU-FOAM', name:'PU Foam Chair', shape:'office', img:IMG+'CHAIR-PU.png',
+  { id:'PU-FOAM',
+    home:'https://www.baekdoo.com/default/product/product_1.php?com_board_basic=read_form&com_board_idx=135&tit=03&sub=01&&com_board_search_code=&com_board_search_value1=&com_board_search_value2=&com_board_page=2&&com_board_id=7&', name:'PU Foam Chair', shape:'office', img:IMG+'CHAIR-PU.png',
     specs:[
       ['소재','고밀도 폴리우레탄'],
       ['특징','Seat 내·외부 연결부위 없음, 파티클 발생 최소화'],
@@ -349,6 +379,18 @@ var CHAIRS = [
   var specBox = document.getElementById('spec');
   var hint = document.getElementById('hint');
   var titleBox = document.getElementById('title');
+  var homeBtn = document.getElementById('homeBtn');
+  var HINT = '옆으로 넘기면 다른 의자, 두 손가락으로 벌리면 확대';
+  var intro = true;                         // 처음엔 인트로 화면
+  document.body.classList.add('intro');
+  hint.textContent = CONFIG.introHint;
+  function exitIntro(){
+    if(!intro) return false;
+    intro = false;
+    document.body.classList.remove('intro');
+    hint.textContent = HINT;
+    return true;
+  }
   var STEP = 0.66;                     // 이웃 의자 간격 (무대 너비 대비)
   var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -421,6 +463,14 @@ var CHAIRS = [
 
   function renderSpec(){
     var ch = CHAIRS[cur];
+    if(intro){
+      specBox.innerHTML = '';
+      titleBox.textContent = CONFIG.introTitle;
+      homeBtn.href = CONFIG.homeUrl;
+      document.title = CONFIG.introTitle + ' | 백두코퍼레이션';
+      return;
+    }
+    homeBtn.href = ch.home || CONFIG.homeUrl;
     var rows = (ch.specs||[]).map(function(r){
       if(!r || r[1] == null || r[1] === '') return '';
       return '<tr><th scope="row">'+esc(r[0])+'</th><td>'+esc(r[1])+'</td></tr>';
@@ -510,20 +560,24 @@ var CHAIRS = [
   stage.addEventListener('pointerdown', unlock);
   document.addEventListener('touchend', unlock, {passive:true});   // 아이폰 소리 잠금 해제용
 
-  function step(d, px){          // 무대를 d칸 이동 (px: 소리 낼 남은 거리)
-    if(d !== 0) resetZoom(false);
-    if(d !== 0) tick(0);        // 의자가 한 칸 넘어갈 때 '딸깍' 한 번
-    drag = 0;
-    if(d === 0){ layout(true); return; }
-    cs = ((cs + d) % M + M) % M;
-    cur = slideData[cs];
-    layout(true);
-    hint.classList.add('gone');
+  function fadeRender(){
     if(reduce){ renderSpec(); return; }
     specBox.classList.add('fade'); titleBox.classList.add('fade');
     clearTimeout(fadeTimer);
     fadeTimer = setTimeout(function(){ renderSpec(); specBox.classList.remove('fade'); titleBox.classList.remove('fade'); }, 180);
   }
+  function step(d, px){          // 무대를 d칸 이동
+    if(d !== 0) resetZoom(false);
+    if(d !== 0) tick(0);        // 의자가 한 칸 넘어갈 때 '딸깍' 한 번
+    var wasIntro = exitIntro();
+    drag = 0;
+    if(d === 0){ layout(true); if(wasIntro) fadeRender(); return; }
+    cs = ((cs + d) % M + M) % M;
+    cur = slideData[cs];
+    layout(true);
+    fadeRender();
+  }
+
   function goChair(ci){      // 점 버튼: 해당 의자가 있는 가장 가까운 슬라이드로
     var best = 0, bestAbs = 1e9;
     for(var i=0;i<M;i++){ if(slideData[i]===ci){ var d = wrapM(i - cs); if(Math.abs(d) < bestAbs){ bestAbs = Math.abs(d); best = d; } } }
@@ -663,6 +717,9 @@ var CHAIRS = [
   }
   stage.addEventListener('pointerup', end);
   stage.addEventListener('pointercancel', end);
+  stage.addEventListener('pointerup', function(e){   // 인트로에서 터치만 해도 의자 페이지로
+    if(intro && !e.target.closest('.arrow,.zreset')){ exitIntro(); fadeRender(); }
+  });
   window.addEventListener('resize', function(){ layout(false); });
 
   if(N < 2){ document.getElementById('prev').hidden = true; document.getElementById('next').hidden = true; hint.hidden = true; }
