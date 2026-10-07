@@ -95,12 +95,15 @@
   .bar .home{background:#fff;color:var(--navy);border:1.5px solid var(--navy)}
   body.intro .dots{visibility:hidden}
   body.intro .spec{display:none}
-  body.intro .title{font-family:var(--ko);font-size:31px;letter-spacing:-.5px}
-  body.intro .hint{white-space:pre;color:var(--navy);font-size:17px;font-weight:700;animation:pulse 1.8s ease-in-out infinite}
+  body.intro .title{font-family:var(--ko);font-size:clamp(24px,7.6vw,31px);letter-spacing:-.5px}
+  .subtitle{margin:6px 18px 0;text-align:center;white-space:pre;font-size:14px;font-weight:700;color:var(--blue);transition:opacity .22s}
+  .subtitle.fade{opacity:0}
+  body.intro .subtitle{color:var(--navy);font-size:17px;animation:pulse 1.8s ease-in-out infinite}
+  body.intro .hint{display:none}
   @keyframes pulse{0%,100%{opacity:1}50%{opacity:.45}}
-  @media (prefers-reduced-motion:reduce){ body.intro .hint{animation:none} }
+  @media (prefers-reduced-motion:reduce){ body.intro .subtitle{animation:none} }
 
-  @media (min-width:600px){ .title,.stage,.nav,.hint,.spec{max-width:520px;margin-left:auto;margin-right:auto} .top{max-width:520px;margin:0 auto} }
+  @media (min-width:600px){ .title,.subtitle,.stage,.nav,.hint,.spec{max-width:520px;margin-left:auto;margin-right:auto} .top{max-width:520px;margin:0 auto} }
   @media (prefers-reduced-motion:reduce){ .slide.anim,.spec,.title,.dots button{transition:none} }
 </style>
 </head>
@@ -118,6 +121,7 @@
 </header>
 
 <h1 class="title" id="title"></h1>
+<p class="subtitle" id="subtitle"></p>
 <section class="stage" id="stage" aria-roledescription="carousel" aria-label="의자 모델">
   <button class="arrow prev" id="prev" aria-label="이전 의자">‹</button>
   <button class="arrow next" id="next" aria-label="다음 의자">›</button>
@@ -151,7 +155,8 @@ var CONFIG = {
   tel: '031-574-9900',
   askUrl: 'https://baekdoo2514.cafe24.com/default/qna/qna_1.php?tit=04&sub=01',
   homeUrl: 'https://www.baekdoo.com/default/product/product_1.php?tit=03&sub=01&com_board_category_code=c9', // 인트로·링크 없는 의자의 홈페이지 버튼
-  introTitle: '백두 ESD 의자',
+  introTitle: '백두 ESD 클린룸 의자',
+  specHint: '▼ 하단 스크롤 스펙 확인 가능 ▼',
   introHint: '◀  터치하면 돌려볼 수 있습니다  ▶',
   note: '표기된 사양은 생산 로트에 따라 다소 차이가 있을 수 있습니다.'
 };
@@ -379,11 +384,11 @@ var CHAIRS = [
   var specBox = document.getElementById('spec');
   var hint = document.getElementById('hint');
   var titleBox = document.getElementById('title');
+  var subBox = document.getElementById('subtitle');
   var homeBtn = document.getElementById('homeBtn');
   var HINT = '옆으로 넘기면 다른 의자, 두 손가락으로 벌리면 확대';
   var intro = true;                         // 처음엔 인트로 화면
   document.body.classList.add('intro');
-  hint.textContent = CONFIG.introHint;
   function exitIntro(){
     if(!intro) return false;
     intro = false;
@@ -466,6 +471,7 @@ var CHAIRS = [
     if(intro){
       specBox.innerHTML = '';
       titleBox.textContent = CONFIG.introTitle;
+      subBox.textContent = CONFIG.introHint;
       homeBtn.href = CONFIG.homeUrl;
       document.title = CONFIG.introTitle + ' | 백두코퍼레이션';
       return;
@@ -490,6 +496,7 @@ var CHAIRS = [
       '<p class="note">'+esc(CONFIG.note)+'</p>';
     dots.forEach(function(d, i){ d.classList.toggle('on', i === cur); d.setAttribute('aria-current', i===cur?'true':'false'); });
     titleBox.textContent = ch.name;
+    subBox.textContent = CONFIG.specHint;
     document.title = ch.name + ' 스펙 | 백두코퍼레이션';
     try{ history.replaceState(null, '', location.pathname + '?id=' + encodeURIComponent(ch.id)); }catch(e){}
   }
@@ -562,9 +569,9 @@ var CHAIRS = [
 
   function fadeRender(){
     if(reduce){ renderSpec(); return; }
-    specBox.classList.add('fade'); titleBox.classList.add('fade');
+    specBox.classList.add('fade'); titleBox.classList.add('fade'); subBox.classList.add('fade');
     clearTimeout(fadeTimer);
-    fadeTimer = setTimeout(function(){ renderSpec(); specBox.classList.remove('fade'); titleBox.classList.remove('fade'); }, 180);
+    fadeTimer = setTimeout(function(){ renderSpec(); specBox.classList.remove('fade'); titleBox.classList.remove('fade'); subBox.classList.remove('fade'); }, 180);
   }
   function step(d, px){          // 무대를 d칸 이동
     if(d !== 0) resetZoom(false);
