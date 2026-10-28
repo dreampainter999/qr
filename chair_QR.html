@@ -175,12 +175,12 @@ var CONFIG = {
    - heights : [실린더, A, B] 목록 — 없으면 높이표 숨김
    - note    : 의자별 안내 문구 (선택)
    ===================================================================== */
-var IMG = 'https://baekdoo2514.cafe24.com/bizdemo165462/img/product/';
+var IMG = 'https://baekdoo.com/bizdemo165462/img/products/chairs/';   // 2026-10 이미지 폴더 정리 후 새 경로
 var GND = '그라운드 바퀴로 안정적으로 접지';
 
 var CHAIRS = [
   /* ---------- 사무·작업형 ---------- */
-  { id:'ESD-PROMAX', name:'ESD-PROMAX', shape:'office', img:IMG+'promax_01.png',
+  { id:'ESD-PROMAX', name:'ESD-PROMAX', shape:'office', img:IMG+'PROMAX/promax_01.png',
     specs:[
       ['시트','ESD 레쟈 표면저항 10⁵~10⁶ Ω, HR 스폰지'],
       ['전기저항치','표면저항 10⁵~10⁶ Ω, 체적저항 10⁵~10⁷ Ω'],
@@ -194,7 +194,7 @@ var CHAIRS = [
       ['등판 (가로×세로)','480 × 520 mm'],
       ['좌판 (가로×세로)','570 × 480 mm'] ] },
 
-  { id:'ESD-MAESTRO', name:'ESD-MAESTRO', shape:'office', img:IMG+'CHAIR-M.png',
+  { id:'ESD-MAESTRO', name:'ESD-MAESTRO', shape:'office', img:IMG+'CHAIR-M/CHAIR-M.png',
     specs:[
       ['시트','ESD 레쟈 표면저항 10⁵~10⁶ Ω, HR 스폰지'],
       ['프레임','크롬도금 스틸 프레임'],
@@ -209,7 +209,7 @@ var CHAIRS = [
       ['좌판 (가로×세로)','450 × 400 mm'] ],
     heights:[['200','350','450'],['250','410','560'],['310','480','680'],['370','560','820']] },
 
-  { id:'ESD-MAESTRO-UP', name:'ESD-MAESTRO-UP', shape:'office', img:IMG+'CHAIR-MUP1.png',
+  { id:'ESD-MAESTRO-UP', name:'ESD-MAESTRO-UP', shape:'office', img:IMG+'CHAIR-MUP1/CHAIR-MUP1.png',
     specs:[
       ['시트','ESD 레쟈 표면저항 10⁵~10⁶ Ω, HR 스폰지'],
       ['프레임','크롬도금 스틸 프레임'],
@@ -224,7 +224,7 @@ var CHAIRS = [
       ['좌판 (가로×세로)','450 × 400 mm'] ],
     heights:[['200','350','450'],['250','410','560'],['310','480','680'],['370','560','820']] },
 
-  { id:'ESD-BESTA', name:'ESD-베스타', shape:'office', img:IMG+'CHAIR-BESTA-1.png',
+  { id:'ESD-BESTA', name:'ESD-베스타', shape:'office', img:IMG+'CHAIR-BESTA/CHAIR-BESTA-1.png',
     specs:[
       ['시트','ESD 레쟈 표면저항 10⁴~10⁸ Ω, PU 발포우레탄 스폰지'],
       ['프레임','크롬도금 스틸 프레임'],
@@ -239,7 +239,7 @@ var CHAIRS = [
     heights:[['200','390','480'],['250','440','600'],['310','510','700'],['370','590','830']] },
 
   /* ---------- 라인·실험실형 ---------- */
-  { id:'ESD-PUREBACK', name:'ESD-퓨어백', shape:'office', img:IMG+'CHAIR-P.png',
+  { id:'ESD-PUREBACK', name:'ESD-퓨어백', shape:'office', img:IMG+'CHAIR-P/CHAIR-P.png',
     specs:[
       ['시트','ESD 레쟈 표면저항 10⁵~10⁶ Ω, PU 발포 성형 우레탄 스폰지'],
       ['프레임','크롬도금 스틸 프레임'],
@@ -254,7 +254,7 @@ var CHAIRS = [
       ['좌판 (가로×세로)','480 × 430 mm'] ],
     heights:[['200','400','510'],['250','450','590'],['310','500','710'],['370','590','850']] },
 
-  { id:'ESD-CHARMING2', name:'ESD-차밍 II', shape:'office', img:IMG+'CHAIR-C2.png',
+  { id:'ESD-CHARMING2', name:'ESD-차밍 II', shape:'office', img:IMG+'CHAIR-C2/CHAIR-C2.png',
     specs:[
       ['시트','ESD 레쟈 표면저항 10⁵~10⁶ Ω, HR 스폰지'],
       ['프레임','크롬도금 스틸 프레임'],
@@ -269,7 +269,7 @@ var CHAIRS = [
       ['좌판 (가로×세로)','480 × 430 mm'] ],
     heights:[['200','400','490'],['250','440','590'],['310','510','710'],['370','570','820']] },
 
-  { id:'ESD-BLOOMING', name:'ESD-블루밍', shape:'office', img:IMG+'CHAIR-B.png',
+  { id:'ESD-BLOOMING', name:'ESD-블루밍', shape:'office', img:IMG+'CHAIR-B/CHAIR-B.png',
     specs:[
       ['시트','ESD 레쟈 표면저항 10⁵~10⁶ Ω, HR 스폰지'],
       ['체어 바디','전도성 엔지니어링 플라스틱'],
@@ -284,7 +284,7 @@ var CHAIRS = [
       ['좌판 (가로×세로)','450 × 400 mm'] ],
     heights:[['200','350','450'],['250','410','560'],['310','480','680'],['370','560','820']] },
 
-  { id:'ESD-BLOOMING-NP', name:'ESD-블루밍 NP', shape:'office', img:IMG+'CHAIR-BNP.png',
+  { id:'ESD-BLOOMING-NP', name:'ESD-블루밍 NP', shape:'office', img:IMG+'CHAIR-BNP/CHAIR-BNP.png',
     specs:[
       ['체어 바디','전도성 엔지니어링 플라스틱'],
       ['너킹','알루미늄 다이캐스팅 너킹'],
@@ -299,7 +299,7 @@ var CHAIRS = [
     heights:[['200','350','450'],['250','410','560'],['310','480','680'],['370','560','820']] },
 
   /* ---------- 원형 스툴 ---------- */
-  { id:'ESD-CIRCLE', name:'ESD-원형', shape:'stool', img:IMG+'CHAIR-C.png',
+  { id:'ESD-CIRCLE', name:'ESD-원형', shape:'stool', img:IMG+'CHAIR-C/CHAIR-C.png',
     specs:[
       ['시트','ESD 레쟈 표면저항 10⁵~10⁶ Ω, HR 스폰지'],
       ['프레임','크롬도금 스틸 프레임'],
@@ -313,7 +313,7 @@ var CHAIRS = [
       ['좌판','Ø 390 mm'] ],
     heights:[['200','400','490'],['250','450','590'],['310','500','700'],['370','590','830']] },
 
-  { id:'ESD-ROUND-NP1', name:'ESD ROUND-NP1', shape:'stool', img:IMG+'round_01.png',
+  { id:'ESD-ROUND-NP1', name:'ESD ROUND-NP1', shape:'stool', img:IMG+'ROUND-NP1/round_01.png',
     specs:[
       ['시트','ESD 엔지니어링 플라스틱 일체형 성형'],
       ['표면저항','10⁴~10⁸ Ω'],
@@ -325,7 +325,7 @@ var CHAIRS = [
       ['좌판','Ø 390 mm'],
       ['높이','400~830 mm (실린더 사양별)'] ] },
 
-  { id:'ESD-ROUND-FIX', name:'ESD ROUND-FIX', shape:'stool', img:IMG+'roundfix_01.png',
+  { id:'ESD-ROUND-FIX', name:'ESD ROUND-FIX', shape:'stool', img:IMG+'ROUND-FIX/roundfix_01.png',
     specs:[
       ['모델','ROUND-FIX 280 / ROUND-FIX 480'],
       ['시트','ESD 레쟈 표면저항 10⁶~10⁷ Ω, HR 스폰지'],
@@ -336,14 +336,14 @@ var CHAIRS = [
       ['베이스','링 Ø 380 mm'] ] },
 
   /* ---------- 로우 타입 ---------- */
-  { id:'ESD-LOWMING', name:'ESD-로우밍', shape:'low', img:IMG+'CHAIR-R.png',
+  { id:'ESD-LOWMING', name:'ESD-로우밍', shape:'low', img:IMG+'CHAIR-R/CHAIR-R.png',
     specs:[
       ['시트','ESD 레쟈 표면저항 10⁵~10⁶ Ω'],
       ['시트 스폰지','HR 스폰지 (15T)'],
       ['너킹','알루미늄 다이캐스팅 너킹'],
       ['전기저항치','표면저항 10⁵~10⁶ Ω, 체적저항 10⁵~10⁷ Ω'] ] },
 
-  { id:'ESD-LOWMING1', name:'ESD-로우밍 I', shape:'low', img:IMG+'CHAIR-R1.png',
+  { id:'ESD-LOWMING1', name:'ESD-로우밍 I', shape:'low', img:IMG+'CHAIR-R1/CHAIR-R1.png',
     specs:[
       ['등판','ESD PU 레쟈 (저항 10⁵~10⁸ Ω) + 쿠션 폼'],
       ['좌판','ESD PU 레쟈 (저항 10⁵~10⁸ Ω) + 쿠션 폼'],
@@ -354,7 +354,7 @@ var CHAIRS = [
     note:'상세 스펙은 정리 중입니다. 자세한 사양은 문의해 주세요.' },
 
   /* ---------- 기타 ---------- */
-  { id:'PU-FOAM', name:'PU Foam Chair', shape:'office', img:IMG+'CHAIR-PU.png',
+  { id:'PU-FOAM', name:'PU Foam Chair', shape:'office', img:IMG+'CHAIR-PU/CHAIR-PU.png',
     specs:[
       ['소재','고밀도 폴리우레탄'],
       ['특징','Seat 내·외부 연결부위 없음, 파티클 발생 최소화'],
@@ -381,7 +381,7 @@ var CHAIRS = [
   introImg.className = 'introimg';
   introImg.alt = '백두 ESD 클린룸 의자 라인업';
   introImg.onerror = function(){ stage.classList.remove('withintro'); introImg.remove(); };
-  introImg.src = IMG + 'QR_intropage.gif';
+  introImg.src = 'QR_intropage.gif';   // 인트로 이미지는 이 저장소(GitHub)에 함께 둠
   stage.appendChild(introImg);
   stage.classList.add('withintro');
   var HINT = '옆으로 넘기면 다른 의자, 두 손가락으로 벌리면 확대';

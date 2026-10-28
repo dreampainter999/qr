@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>백두 ESD 신발 스펙</title>
+<style>
+  :root{
+    --navy:#3d5a8a; --blue:#1CA7EC; --label:#eef1f6; --ink:#1f2a3a; --sub:#6b778a;
+    --line:#d9dfe8; --floor:#f4f6f9;
+    --ko:'Malgun Gothic','맑은 고딕','Apple SD Gothic Neo',sans-serif;
+    --en:Tahoma,'Malgun Gothic',sans-serif;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;background:#fff;color:var(--ink);font-family:var(--ko)}
+  body{padding-top:env(safe-area-inset-top,0px);padding-bottom:calc(76px + env(safe-area-inset-bottom,0px))}
+  a{color:inherit}
+
+  .top{display:flex;align-items:center;justify-content:space-between;padding:14px 18px 10px;border-bottom:2px solid var(--navy)}
+  .top .co{display:block;line-height:0;text-decoration:none}
+  .top .co img{height:34px;width:auto;display:block}
+  .top .right{display:flex;align-items:center;gap:10px}
+  .snd{width:34px;height:34px;border:1px solid var(--line);border-radius:50%;background:#fff;color:var(--navy);
+    display:flex;align-items:center;justify-content:center;padding:0;cursor:pointer}
+  .snd svg{width:18px;height:18px}
+  .snd .off{display:none}
+  .snd[aria-pressed="false"] .on{display:none}
+  .snd[aria-pressed="false"] .off{display:block}
+  .snd[aria-pressed="false"]{color:var(--sub)}
+  .snd:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+  .top .cat{font-family:var(--en);font-size:12px;color:var(--sub)}
+
+  .title{margin:18px 18px 0;text-align:center;font-family:var(--en);font-size:29px;font-weight:700;letter-spacing:-.2px;color:var(--ink);transition:opacity .22s}
+  .title.fade{opacity:0}
+  /* ---------- 회전 무대 ---------- */
+  .stage{position:relative;height:430px;overflow:hidden;touch-action:pan-y;user-select:none;cursor:grab;background:#fff}
+  .stage.dragging{cursor:grabbing}
+  .slide{position:absolute;left:50%;top:18px;width:84%;height:360px;display:flex;align-items:flex-end;justify-content:center;
+    transform-origin:50% 88%;will-change:transform,opacity}
+  .slide.anim{transition:transform .38s cubic-bezier(.2,.7,.2,1),opacity .38s}
+  .zm{width:100%;height:100%;display:flex;align-items:flex-end;justify-content:center;transform-origin:0 0;will-change:transform}
+  .zm.ease{transition:transform .25s ease-out}
+  .stage.zoomed{touch-action:none;cursor:move}
+  .stage.zoomed .slide:not(.center){opacity:0!important}
+  .zreset{position:absolute;right:10px;bottom:10px;z-index:300;border:1px solid var(--line);background:rgba(255,255,255,.95);
+    color:var(--navy);font:inherit;font-size:12px;font-weight:700;padding:7px 12px;border-radius:16px;cursor:pointer;display:none}
+  .stage.zoomed .zreset{display:block}
+  .stage.zoomed .arrow{display:none}
+  .slide img,.slide svg{max-width:100%;max-height:100%;display:block;pointer-events:none;-webkit-user-drag:none}
+  .arrow{position:absolute;top:50%;transform:translateY(-50%);width:36px;height:36px;border-radius:50%;
+    border:1px solid var(--line);background:rgba(255,255,255,.92);color:var(--navy);font-size:18px;line-height:1;
+    display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:200}
+  .arrow.prev{left:10px}.arrow.next{right:10px}
+  .arrow:focus-visible,.dots button:focus-visible,.bar a:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+
+  .nav{display:flex;align-items:center;justify-content:center;gap:6px;padding:12px 0 4px}
+  .dots{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;max-width:80%}
+  .dots button{width:7px;height:7px;padding:0;border:0;border-radius:4px;background:var(--line);cursor:pointer;transition:width .25s,background .25s}
+  .dots button.on{width:20px;background:var(--blue)}
+  .hint{text-align:center;font-size:12px;color:var(--sub);margin:4px 0 0;transition:opacity .4s}
+  .hint.gone{opacity:0}
+
+  /* ---------- 스펙 ---------- */
+  .spec{padding:18px 18px 8px;transition:opacity .22s}
+  .spec.fade{opacity:0}
+  .head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding-bottom:12px;border-bottom:2px solid var(--navy)}
+  .head h2{margin:0;font-size:17px;font-weight:700;color:var(--navy)}
+  .head .count{font-family:var(--en);font-size:13px;color:var(--sub);white-space:nowrap}
+  .desc{font-size:14px;line-height:1.65;color:#3b4658;margin:12px 0 16px}
+  .tbl{width:100%;border-collapse:collapse;font-size:13px}
+  .tbl th,.tbl td{border-bottom:1px solid var(--line);padding:10px 10px;text-align:left;vertical-align:top;line-height:1.5}
+  .tbl th{width:34%;background:var(--label);color:var(--navy);font-weight:700}
+  .tbl td{font-family:var(--en)}
+  .tbl tr:first-child th,.tbl tr:first-child td{border-top:1px solid var(--line)}
+  .head{margin-bottom:14px}
+  .sub{margin:22px 0 8px;font-size:15px;font-weight:700;color:var(--navy)}
+  .sub span{font-family:var(--en);font-weight:400;font-size:12px;color:var(--sub)}
+  .tbl.ht th,.tbl.ht td{text-align:center;width:auto}
+  .tbl.ht thead th{font-size:12px;background:var(--label);color:var(--navy)}
+  .tbl.ht tbody th{background:#fff;color:var(--ink);font-family:var(--en);font-weight:700}
+  .tbl.ht tbody tr:first-child th,.tbl.ht tbody tr:first-child td{border-top:0}
+  .pnote{margin:14px 0 0;padding:10px 12px;background:var(--label);border-radius:6px;font-size:13px;color:var(--navy)}
+  .note{font-size:11.5px;color:var(--sub);margin:12px 0 0;line-height:1.6}
+
+  /* ---------- 하단 문의 바 ---------- */
+  .bar{position:fixed;left:0;right:0;bottom:0;display:flex;gap:8px;padding:10px 12px calc(10px + env(safe-area-inset-bottom,0px));
+    background:#fff;border-top:1px solid var(--line);z-index:500}
+  .bar a{flex:1;display:flex;align-items:center;justify-content:center;gap:7px;height:48px;border-radius:8px;
+    text-decoration:none;font-size:15px;font-weight:700}
+  .bar .tel{background:var(--navy);color:#fff}
+  .bar .ask{background:#fff;color:var(--navy);border:1.5px solid var(--navy)}
+  .bar svg{width:17px;height:17px;flex:0 0 auto}
+  .bar a{font-size:14px;gap:5px}
+  .bar .home{background:#fff;color:var(--navy);border:1.5px solid var(--navy)}
+  body.intro .dots{visibility:hidden}
+  body.intro .spec{display:none}
+  body.intro .title{font-family:var(--ko);font-size:clamp(24px,7.6vw,31px);letter-spacing:-.5px}
+  .subtitle{margin:6px 18px 0;text-align:center;white-space:pre;font-size:14px;font-weight:700;color:var(--blue);transition:opacity .22s}
+  .subtitle.fade{opacity:0}
+  .subtitle{animation:pulse 1.8s ease-in-out infinite}
+  body.intro .subtitle{color:var(--navy);font-size:17px}
+  body.intro .hint{display:none}
+  .introimg{display:none;position:absolute;left:16px;right:16px;top:8px;bottom:8px;width:calc(100% - 32px);height:calc(100% - 16px);
+    object-fit:contain;z-index:150;pointer-events:none;-webkit-user-drag:none}
+  body.intro .stage.withintro .introimg{display:block}
+  body.intro .stage.withintro .slide,body.intro .stage.withintro .arrow{visibility:hidden}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.45}}
+  @media (prefers-reduced-motion:reduce){ .subtitle{animation:none} }
+
+  @media (min-width:600px){ .title,.subtitle,.stage,.nav,.hint,.spec{max-width:520px;margin-left:auto;margin-right:auto} .top{max-width:520px;margin:0 auto} }
+  @media (prefers-reduced-motion:reduce){ .slide.anim,.spec,.title,.dots button{transition:none} }
+  /* ---------- 신발: 시리즈 버튼 · 특징 · 재질 구성 ---------- */
+  .series{display:flex;flex-wrap:wrap;justify-content:center;gap:5px;padding:12px 10px 0}
+  .series button{border:1px solid var(--line);background:#fff;color:var(--navy);font:inherit;font-size:12.5px;font-weight:700;
+    padding:5px 9px;border-radius:16px;cursor:pointer}
+  .series button.on{background:var(--navy);border-color:var(--navy);color:#fff}
+  .series button:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+  .nav{display:none}
+  .slide{top:30px;height:330px}
+  .feat{margin:0;padding:0 0 0 18px;font-size:13.5px;line-height:1.65;color:#3b4658}
+  .feat li{margin:3px 0}
+  .tbl.parts th{width:30%}
+  @media (min-width:600px){ .series{max-width:520px;margin-left:auto;margin-right:auto} }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <a class="co" href="https://baekdoo.com/" aria-label="백두코퍼레이션 홈페이지"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALoAAABYCAYAAABCgu14AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6ODU4QjQ0MUZDOUNCMTFGMDkxODQ5MkEyRTRCNkFDMTUiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6ODU4QjQ0MjBDOUNCMTFGMDkxODQ5MkEyRTRCNkFDMTUiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo4NThCNDQxREM5Q0IxMUYwOTE4NDkyQTJFNEI2QUMxNSIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo4NThCNDQxRUM5Q0IxMUYwOTE4NDkyQTJFNEI2QUMxNSIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PhEkBUYAAB/uSURBVHja7F0JfFTV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" alt="백두코퍼레이션 BDM ESD"></a>
+  <div class="right">
+    <span class="cat">ESD Shoes</span>
+    <button class="snd" id="snd" aria-pressed="true" aria-label="넘김 소리 끄기">
+      <svg class="on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5a10 10 0 0 1 0 14"/></svg>
+      <svg class="off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="m22 9-6 6"/><path d="m16 9 6 6"/></svg>
+    </button>
+  </div>
+</header>
+
+<h1 class="title" id="title"></h1>
+<p class="subtitle" id="subtitle"></p>
+<div class="series" id="series" role="tablist" aria-label="신발 시리즈"></div>
+<section class="stage" id="stage" aria-roledescription="carousel" aria-label="신발 모델">
+  <button class="arrow prev" id="prev" aria-label="이전 신발">‹</button>
+  <button class="arrow next" id="next" aria-label="다음 신발">›</button>
+  <button class="zreset" id="zreset">원래 크기</button>
+</section>
+<div class="nav"><div class="dots" id="dots"></div></div>
+<p class="hint" id="hint">옆으로 넘기면 다른 신발, 두 손가락으로 벌리면 확대</p>
+
+<main class="spec" id="spec" aria-live="polite"></main>
+
+<nav class="bar">
+  <a class="home" id="homeBtn" href="#">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M10 21v-6h4v6"/></svg>
+    홈페이지
+  </a>
+  <a class="tel" id="telBtn" href="#">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg>
+    전화 문의
+  </a>
+  <a class="ask" id="askBtn" href="#">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+    견적 문의
+  </a>
+</nav>
+
+<script>
+/* =====================================================================
+   ① 설정 — 회사 정보
+   ===================================================================== */
+var CONFIG = {
+  tel: '031-574-9900',
+  askUrl: 'https://baekdoo2514.cafe24.com/default/qna/qna_1.php?tit=04&sub=01',
+  homeUrl: 'https://baekdoo.com/default/product/product_5.php?tit=03&sub=05', // 홈페이지 버튼 (인트로·모든 신발 공통 → 신발 목록)
+  introTitle: '백두 ESD 클린룸 신발',
+  specHint: '▼ 하단 스크롤 스펙 확인 가능 ▼',
+  introHint: '◀  시리즈를 고르거나 옆으로 넘겨 보세요  ▶',
+  note: '표기된 사양은 생산 로트에 따라 다소 차이가 있을 수 있습니다.'
+};
+
+/* =====================================================================
+   ② 신발 데이터 (넘기는 순서 = 아래 순서, 시리즈별로 묶여 있음)
+   - id     : QR 주소 끝에 붙는 값  →  shoe_QR.html?id=BSS-312
+   - s      : 시리즈 (SERIES 목록의 첫 번째 값)
+   - img    : 제품 이미지 주소 (못 불러오면 임시 그림 표시)
+   - desc   : 한 줄 소개 (선택)
+   - specs  : [항목, 내용] 목록 — 모델마다 자유롭게
+   - feats  : 특징 목록 (선택)
+   - parts  : 재질 구성 [부품, 사양] 목록 (선택)
+   - note   : 모델별 안내 문구 (선택)
+   출처: 백두 홈페이지 신발 상세페이지 (2026-10-27 기준)
+   ===================================================================== */
+var IMG = 'https://baekdoo.com/bizdemo165462/img/products/shoes/';
+var SERIES = [["BSS", "BSS", "PVC 제전화"], ["BCS", "BCS", "PVC 도전화"], ["BUS", "BUS", "PU 제전화"], ["CBS", "CBS", "PU 제전화"], ["SAFETY", "안전화", "ESD 안전화"], ["SLIPPER", "슬리퍼", "제전 슬리퍼"], ["BOOTS", "부츠", "부츠·방진화"]];
+var SHOES = [
+  {"s": "BSS", "id": "BSS-312", "name": "BSS-312", "img": IMG + "BSS-312/BSS-312.png", "specs": [["분류", "PVC 제전화 (Dissipative)"], ["표면저항", "10⁸~10⁹ Ω"], ["체적저항", "10⁷~10⁸ Ω"], ["밑창", "내첨형 도전성 PVC, 인젝션 몰딩"], ["사이즈", "220~280 mm (5 mm 단위), 290, 300 mm"], ["색상", "화이트, 그린, 회색"], ["제작기간", "7~10일"], ["적용", "반도체·전자·제약·바이오·식품 산업, 연구소 등 실내화가 필요한 사업장"]], "feats": ["인체공학 설계로 장시간 착용해도 피로가 적음", "발등 통기성 망사로 땀이 차지 않고 쾌적함", "미드솔 쿠션과 바이오세라믹 처리로 피로·발냄새 감소", "아웃솔 내첨형 도전성 PVC로 대전방지 기능이 영구 유지"]},
+  {"s": "BSS", "id": "BSS-313", "name": "BSS-313", "img": IMG + "BSS-313/BSS-313.png", "specs": [["분류", "PVC 제전화 (Dissipative)"], ["표면저항", "10⁸~10⁹ Ω"], ["체적저항", "10⁷~10⁸ Ω"], ["밑창", "내첨형 도전성 PVC, 인젝션 몰딩"], ["사이즈", "220~280 mm (5 mm 단위), 290, 300 mm"], ["색상", "화이트, 그린, 회색"], ["제작기간", "7~10일"], ["적용", "반도체·전자·제약·바이오·식품 산업, 연구소 등 실내화가 필요한 사업장"]], "feats": ["인체공학 설계로 장시간 착용해도 피로가 적음", "미드솔 쿠션과 바이오세라믹 처리로 피로·발냄새 감소", "밀폐형 갑피로 분진·케미칼 작업장에 적합", "아웃솔 내첨형 도전성 PVC로 대전방지 기능이 영구 유지"]},
+  {"s": "BSS", "id": "BSS-314", "name": "BSS-314", "img": IMG + "BSS-314/BSS-314.png", "specs": [["분류", "PVC 제전화 (Dissipative)"], ["표면저항", "10⁸~10⁹ Ω"], ["체적저항", "10⁷~10⁸ Ω"], ["밑창", "내첨형 도전성 PVC, 인젝션 몰딩"], ["사이즈", "220~280 mm (5 mm 단위), 290, 300 mm"], ["색상", "화이트, 그린, 회색"], ["제작기간", "7~10일"], ["적용", "반도체·전자·제약·바이오·식품 산업, 연구소 등 실내화가 필요한 사업장"]], "feats": ["인체공학 설계로 장시간 착용해도 피로가 적음", "발등 통기성 망사로 땀이 차지 않고 쾌적함", "미드솔 쿠션과 바이오세라믹 처리로 피로·발냄새 감소", "발등 벨크로(찍찍이)로 신고 벗기 편리함", "아웃솔 내첨형 도전성 PVC로 대전방지 기능이 영구 유지"]},
+  {"s": "BSS", "id": "BSS-315", "name": "BSS-315", "img": IMG + "BSS-315/BSS-315.png", "specs": [["분류", "PVC 제전화 (Dissipative)"], ["표면저항", "10⁸~10⁹ Ω"], ["체적저항", "10⁷~10⁸ Ω"], ["밑창", "내첨형 도전성 PVC, 인젝션 몰딩"], ["사이즈", "220~280 mm (5 mm 단위), 290, 300 mm"], ["색상", "화이트, 그린, 회색"], ["제작기간", "7~10일"], ["적용", "반도체·전자·제약·바이오·식품 산업, 연구소 등 실내화가 필요한 사업장"]], "feats": ["인체공학 설계로 장시간 착용해도 피로가 적음", "발등 통기성 망사로 땀이 차지 않고 쾌적함", "미드솔 쿠션과 바이오세라믹 처리로 피로·발냄새 감소", "아웃솔 내첨형 도전성 PVC로 대전방지 기능이 영구 유지"]},
+  {"s": "BSS", "id": "BSS-316", "name": "BSS-316", "img": IMG + "BSS-316/BSS-316.png", "specs": [["분류", "PVC 제전화 (Dissipative)"], ["표면저항", "10⁸~10⁹ Ω"], ["체적저항", "10⁷~10⁸ Ω"], ["밑창", "내첨형 도전성 PVC, 인젝션 몰딩"], ["사이즈", "220~280 mm (5 mm 단위), 290, 300 mm"], ["제작기간", "주문제작 7~10일"], ["적용", "반도체·전자·제약·바이오·식품 산업, 연구소 등 실내화가 필요한 사업장"]], "feats": ["인체공학 설계로 장시간 착용해도 피로가 적음", "발등 통기성 망사로 땀이 차지 않고 쾌적함", "미드솔 쿠션과 바이오세라믹 처리로 피로·발냄새 감소", "아웃솔 내첨형 도전성 PVC로 대전방지 기능이 영구 유지"]},
+  {"s": "BSS", "id": "BSS-318", "name": "BSS-318", "img": IMG + "BSS-318/BSS-318.png", "specs": [["분류", "PVC 제전화 (Dissipative)"], ["표면저항", "10⁸~10⁹ Ω"], ["체적저항", "10⁷~10⁸ Ω"], ["밑창", "내첨형 도전성 PVC, 인젝션 몰딩"], ["사이즈", "220~280 mm (5 mm 단위), 290, 300 mm"], ["색상", "화이트, 그린, 그레이"], ["제작기간", "주문제작 7~10일"], ["적용", "반도체·전자·제약·바이오·식품 산업, 연구소 등 실내화가 필요한 사업장"]], "feats": ["인체공학 설계로 장시간 착용해도 피로가 적음", "발등 통기 구멍으로 땀이 차지 않고 쾌적함", "미드솔 쿠션과 바이오세라믹 처리로 피로·발냄새 감소", "아웃솔 내첨형 도전성 PVC로 대전방지 기능이 영구 유지"]},
+  {"s": "BSS", "id": "BSS-319", "name": "BSS-319", "img": IMG + "BSS-319/BSS-319.png", "specs": [["분류", "PVC 제전화 (Dissipative)"], ["표면저항", "10⁸~10⁹ Ω"], ["체적저항", "10⁷~10⁸ Ω"], ["밑창", "내첨형 도전성 PVC, 인젝션 몰딩"], ["사이즈", "220~280 mm (5 mm 단위), 290, 300 mm"], ["색상", "화이트, 그린, 그레이"], ["제작기간", "주문제작 7~10일"], ["적용", "반도체·전자·제약·바이오·식품 산업, 연구소 등 실내화가 필요한 사업장"]], "feats": ["인체공학 설계로 장시간 착용해도 피로가 적음", "발등 통기 구멍으로 땀이 차지 않고 쾌적함", "미드솔 쿠션과 바이오세라믹 처리로 피로·발냄새 감소", "아웃솔 내첨형 도전성 PVC로 대전방지 기능이 영구 유지"]},
+  {"s": "BCS", "id": "BCS-321", "name": "BCS-321", "img": IMG + "BCS-321/BCS-321.png", "specs": [["분류", "PVC 도전화 (Conductive)"], ["표면저항", "10⁵~10⁶ Ω"], ["체적저항", "10⁵ Ω"], ["밑창", "내첨형 도전성 PVC, 인젝션 몰딩"], ["사이즈", "220~280 mm (5 mm 단위), 290, 300 mm"], ["색상", "화이트, 그린, 회색"], ["제작기간", "7~10일"], ["적용", "반도체·전자·제약·바이오·식품 산업, 연구소 등 실내화가 필요한 사업장"]], "feats": ["인체공학 설계로 장시간 착용해도 피로가 적음", "발등 통기성 망사로 땀이 차지 않고 쾌적함", "미드솔 쿠션과 바이오세라믹 처리로 피로·발냄새 감소", "아웃솔 내첨형 도전성 PVC로 대전방지 기능이 영구 유지"]},
+  {"s": "BCS", "id": "BCS-322", "name": "BCS-322", "img": IMG + "BCS-322/BCS-322.png", "specs": [["분류", "PVC 도전화 (Conductive)"], ["표면저항", "10⁵~10⁶ Ω"], ["체적저항", "10⁵ Ω"], ["밑창", "내첨형 도전성 PVC, 인젝션 몰딩"], ["사이즈", "220~280 mm (5 mm 단위), 290, 300 mm"], ["색상", "화이트, 그린, 회색"], ["제작기간", "주문제작 7~10일"], ["적용", "반도체·전자·제약·바이오·식품 산업, 연구소 등 실내화가 필요한 사업장"]], "feats": ["인체공학 설계로 장시간 착용해도 피로가 적음", "발등 통기성 망사로 땀이 차지 않고 쾌적함", "미드솔 쿠션과 바이오세라믹 처리로 피로·발냄새 감소", "아웃솔 내첨형 도전성 PVC로 대전방지 기능이 영구 유지"]},
+  {"s": "BCS", "id": "BCS-323", "name": "BCS-323", "img": IMG + "BCS-323/BCS-323.png", "specs": [["분류", "PVC 도전화 (Conductive)"], ["표면저항", "10⁵~10⁶ Ω"], ["체적저항", "10⁵ Ω"], ["밑창", "내첨형 도전성 PVC, 인젝션 몰딩"], ["사이즈", "220~280 mm (5 mm 단위), 290, 300 mm"], ["색상", "화이트, 그린, 회색"], ["제작기간", "주문제작 7~10일"], ["적용", "반도체·전자·제약·바이오·식품 산업, 연구소 등 실내화가 필요한 사업장"]], "feats": ["인체공학 설계로 장시간 착용해도 피로가 적음", "미드솔 쿠션과 바이오세라믹 처리로 피로·발냄새 감소", "밀폐형 갑피로 분진·케미칼 작업장에 적합", "아웃솔 내첨형 도전성 PVC로 대전방지 기능이 영구 유지"]},
+  {"s": "BCS", "id": "BCS-324", "name": "BCS-324", "img": IMG + "BCS-324/BCS-324.png", "specs": [["분류", "PVC 도전화 (Conductive)"], ["표면저항", "10⁵~10⁶ Ω"], ["체적저항", "10⁵ Ω"], ["밑창", "내첨형 도전성 PVC, 인젝션 몰딩"], ["사이즈", "220~280 mm (5 mm 단위), 290, 300 mm"], ["색상", "화이트, 그린, 회색"], ["제작기간", "주문제작 7~10일"], ["적용", "반도체·전자·제약·바이오·식품 산업, 연구소 등 실내화가 필요한 사업장"]], "feats": ["인체공학 설계로 장시간 착용해도 피로가 적음", "발등 통기성 망사로 땀이 차지 않고 쾌적함", "미드솔 쿠션과 바이오세라믹 처리로 피로·발냄새 감소", "발등 벨크로(찍찍이)로 신고 벗기 편리함", "아웃솔 내첨형 도전성 PVC로 대전방지 기능이 영구 유지"]},
+  {"s": "BCS", "id": "BCS-325", "name": "BCS-325", "img": IMG + "BCS-325/BCS-325.png", "specs": [["분류", "PVC 도전화 (Conductive)"], ["표면저항", "10⁵~10⁶ Ω"], ["체적저항", "10⁵ Ω"], ["밑창", "내첨형 도전성 PVC, 인젝션 몰딩"], ["사이즈", "220~280 mm (5 mm 단위), 290, 300 mm"], ["색상", "화이트, 그린, 회색"], ["적용", "반도체·전자·제약·바이오·식품 산업, 연구소 등 실내화가 필요한 사업장"]], "feats": ["인체공학 설계로 장시간 착용해도 피로가 적음", "발등 통기성 망사로 땀이 차지 않고 쾌적함", "미드솔 쿠션과 바이오세라믹 처리로 피로·발냄새 감소", "아웃솔 내첨형 도전성 PVC로 대전방지 기능이 영구 유지"]},
+  {"s": "BCS", "id": "BCS-326", "name": "BCS-326", "img": IMG + "BCS-326/BCS-326.png", "specs": [["분류", "PVC 도전화 (Conductive)"], ["표면저항", "10⁵~10⁶ Ω"], ["체적저항", "10⁵ Ω"], ["밑창", "내첨형 도전성 PVC, 인젝션 몰딩"], ["사이즈", "220~280 mm (5 mm 단위), 290, 300 mm"], ["색상", "화이트, 그린, 회색"], ["제작기간", "주문제작 7~10일"], ["적용", "반도체·전자·제약·바이오·식품 산업, 연구소 등 실내화가 필요한 사업장"]], "feats": ["인체공학 설계로 장시간 착용해도 피로가 적음", "발등 통기성 망사로 땀이 차지 않고 쾌적함", "미드솔 쿠션과 바이오세라믹 처리로 피로·발냄새 감소", "아웃솔 내첨형 도전성 PVC로 대전방지 기능이 영구 유지"]},
+  {"s": "BCS", "id": "BCS-327", "name": "BCS-327", "img": IMG + "BCS-327/BCS-327.png", "specs": [["분류", "PVC 도전화 (Conductive)"], ["표면저항", "10⁵~10⁶ Ω"], ["체적저항", "10⁵ Ω"], ["밑창", "내첨형 도전성 PVC, 인젝션 몰딩"], ["사이즈", "220~280 mm (5 mm 단위), 290, 300 mm"], ["색상", "화이트, 그린, 회색"], ["제작기간", "주문제작 7~10일"], ["적용", "반도체·전자·제약·바이오·식품 산업, 연구소 등 실내화가 필요한 사업장"]], "feats": ["인체공학 설계로 장시간 착용해도 피로가 적음", "발등 통기성 망사로 땀이 차지 않고 쾌적함", "미드솔 쿠션과 바이오세라믹 처리로 피로·발냄새 감소", "아웃솔 내첨형 도전성 PVC로 대전방지 기능이 영구 유지"]},
+  {"s": "BCS", "id": "BCS-328", "name": "BCS-328", "img": IMG + "BCS-328/BCS-328.png", "specs": [["분류", "PVC 도전화 (Conductive)"], ["표면저항", "10⁵~10⁶ Ω"], ["체적저항", "10⁵ Ω"], ["밑창", "내첨형 도전성 PVC, 인젝션 몰딩"], ["사이즈", "220~280 mm (5 mm 단위), 290, 300 mm"], ["색상", "화이트, 그린, 회색"], ["제작기간", "7~10일"], ["적용", "반도체·전자·제약·바이오·식품 산업, 연구소 등 실내화가 필요한 사업장"]], "feats": ["인체공학 설계로 장시간 착용해도 피로가 적음", "발등 통기 구멍으로 땀이 차지 않고 쾌적함", "미드솔 쿠션과 바이오세라믹 처리로 피로·발냄새 감소", "아웃솔 내첨형 도전성 PVC로 대전방지 기능이 영구 유지"]},
+  {"s": "BCS", "id": "BCS-329", "name": "BCS-329", "img": IMG + "BCS-329/BCS-329.png", "specs": [["분류", "PVC 도전화 (Conductive)"], ["표면저항", "10⁵~10⁶ Ω"], ["체적저항", "10⁵ Ω"], ["밑창", "내첨형 도전성 PVC, 인젝션 몰딩"], ["사이즈", "220~280 mm (5 mm 단위), 290, 300 mm"], ["색상", "화이트, 그린, 회색"], ["제작기간", "7~10일"], ["적용", "반도체·전자·제약·바이오·식품 산업, 연구소 등 실내화가 필요한 사업장"]], "feats": ["인체공학 설계로 장시간 착용해도 피로가 적음", "발등 통기 구멍으로 땀이 차지 않고 쾌적함", "미드솔 쿠션과 바이오세라믹 처리로 피로·발냄새 감소", "아웃솔 내첨형 도전성 PVC로 대전방지 기능이 영구 유지"]},
+  {"s": "BUS", "id": "BUS-374", "name": "BUS-374", "img": IMG + "BUS-374/BUS-374.png", "specs": [["분류", "PU 제전화 (Dissipative)"], ["표면저항", "10⁸~10⁹ Ω"], ["체적저항", "10⁶~10⁷ Ω"], ["밑창", "고분자 대전방지제를 혼합한 고밀도 ESD PU 일체형 밑창, 인젝션 몰딩"], ["사이즈", "220~280 mm (5 mm 단위), 290, 300, 310, 320 mm"], ["색상", "화이트, 그린, 회색"], ["제작기간", "7~10일"], ["적용", "반도체·전자·제약·바이오·식품 산업, 연구소 등 실내화가 필요한 사업장"]], "feats": ["인체공학 설계로 장시간 착용해도 피로가 적음", "발등 통기성 망사로 땀이 차지 않고 쾌적함", "미드솔 쿠션과 바이오세라믹 처리로 피로·발냄새 감소", "발등 벨크로(찍찍이)로 신고 벗기 편리함", "고밀도 PU 밑창: 가볍고 충격 흡수가 뛰어나며 대전방지 기능이 영구 유지"]},
+  {"s": "BUS", "id": "BUS-320", "name": "BUS-320", "img": IMG + "BUS-320/BUS-320.png", "specs": [["분류", "PU 제전화 (Dissipative)"], ["표면저항", "10⁸~10⁹ Ω"], ["체적저항", "10⁶~10⁷ Ω"], ["밑창", "고분자 대전방지제를 혼합한 고밀도 ESD PU 일체형 밑창, 인젝션 몰딩"], ["사이즈", "220~280 mm (5 mm 단위), 290, 300 mm"], ["제작기간", "7~10일"], ["적용", "반도체·전자·제약·바이오·식품 산업, 연구소 등 실내화가 필요한 사업장"]], "feats": ["인체공학 설계로 장시간 착용해도 피로가 적음", "발등 통기성 망사로 땀이 차지 않고 쾌적함", "미드솔 쿠션과 바이오세라믹 처리로 피로·발냄새 감소", "고밀도 PU 밑창: 가볍고 충격 흡수가 뛰어나며 대전방지 기능이 영구 유지"]},
+  {"s": "BUS", "id": "BUS-370", "name": "BUS-370", "img": IMG + "BUS-370/BUS-370.png", "specs": [["분류", "PU 제전화 (Dissipative)"], ["표면저항", "10⁸~10⁹ Ω"], ["체적저항", "10⁶~10⁷ Ω"], ["밑창", "고분자 대전방지제를 혼합한 고밀도 ESD PU 일체형 밑창, 인젝션 몰딩"], ["사이즈", "220~280 mm (5 mm 단위), 290, 300, 310, 320 mm"], ["제작기간", "7~10일"], ["적용", "반도체·전자·제약·바이오·식품 산업, 연구소 등 실내화가 필요한 사업장"]], "feats": ["인체공학 설계로 장시간 착용해도 피로가 적음", "미드솔 쿠션과 바이오세라믹 처리로 피로·발냄새 감소", "밀폐형 갑피로 분진·케미칼 작업장에 적합", "고밀도 PU 밑창: 가볍고 충격 흡수가 뛰어나며 대전방지 기능이 영구 유지"]},
+  {"s": "BUS", "id": "BUS-371", "name": "BUS-371", "img": IMG + "BUS-371/BUS-371.png", "specs": [["분류", "PU 제전화 (Dissipative)"], ["표면저항", "10⁸~10⁹ Ω"], ["체적저항", "10⁶~10⁷ Ω"], ["밑창", "고분자 대전방지제를 혼합한 고밀도 ESD PU 일체형 밑창, 인젝션 몰딩"], ["사이즈", "220~280 mm (5 mm 단위), 290, 300, 310, 320 mm"], ["제작기간", "7~10일"], ["적용", "반도체·전자·제약·바이오·식품 산업, 연구소 등 실내화가 필요한 사업장"]], "feats": ["인체공학 설계로 장시간 착용해도 피로가 적음", "발등 통기 구멍으로 땀이 차지 않고 쾌적함", "미드솔 쿠션과 바이오세라믹 처리로 피로·발냄새 감소", "고밀도 PU 밑창: 가볍고 충격 흡수가 뛰어나며 대전방지 기능이 영구 유지"]},
+  {"s": "BUS", "id": "BUS-372", "name": "BUS-372", "img": IMG + "BUS-372/BUS-372.png", "specs": [["분류", "PU 제전화 (Dissipative)"], ["표면저항", "10⁸~10⁹ Ω"], ["체적저항", "10⁶~10⁷ Ω"], ["밑창", "고분자 대전방지제를 혼합한 고밀도 ESD PU 일체형 밑창, 인젝션 몰딩"], ["사이즈", "220~280 mm (5 mm 단위), 290, 300, 310, 320 mm"], ["제작기간", "7~10일"], ["적용", "반도체·전자·제약·바이오·식품 산업, 연구소 등 실내화가 필요한 사업장"]], "feats": ["인체공학 설계로 장시간 착용해도 피로가 적음", "발등 통기성 망사로 땀이 차지 않고 쾌적함", "미드솔 쿠션과 바이오세라믹 처리로 피로·발냄새 감소", "고밀도 PU 밑창: 가볍고 충격 흡수가 뛰어나며 대전방지 기능이 영구 유지"]},
+  {"s": "BUS", "id": "BUS-378", "name": "BUS-378", "img": IMG + "BUS-378/BUS-378.png", "specs": [["분류", "PU 제전화 (Dissipative)"], ["표면저항", "10⁸~10⁹ Ω"], ["체적저항", "10⁶~10⁷ Ω"], ["밑창", "고분자 대전방지제를 혼합한 고밀도 ESD PU 일체형 밑창, 인젝션 몰딩"], ["사이즈", "220~280 mm (5 mm 단위), 290, 300, 310, 320 mm"], ["제작기간", "7~10일"], ["적용", "반도체·전자·제약·바이오·식품 산업, 연구소 등 실내화가 필요한 사업장"]], "feats": ["인체공학 설계로 장시간 착용해도 피로가 적음", "발등 통기성 망사로 땀이 차지 않고 쾌적함", "미드솔 쿠션과 바이오세라믹 처리로 피로·발냄새 감소", "고밀도 PU 밑창: 가볍고 충격 흡수가 뛰어나며 대전방지 기능이 영구 유지"]},
+  {"s": "BUS", "id": "BUS-372A", "name": "BUS-372A", "img": IMG + "BUS-372A/BUS-372A.png", "specs": [["분류", "PU 제전화 (Dissipative)"], ["표면저항", "10⁸~10⁹ Ω"], ["체적저항", "10⁶~10⁷ Ω"], ["밑창", "고분자 대전방지제를 혼합한 고밀도 ESD PU 일체형 밑창, 인젝션 몰딩"], ["사이즈", "225~280 mm (5 mm 단위), 290, 300 mm"], ["색상", "화이트, 블랙"], ["제작기간", "7~10일"], ["적용", "반도체·전자·제약·바이오·식품 산업, 연구소 등 실내화가 필요한 사업장"]], "feats": ["인체공학 설계로 장시간 착용해도 피로가 적음", "발등 통기성 망사로 땀이 차지 않고 쾌적함", "미드솔 쿠션과 바이오세라믹 처리로 피로·발냄새 감소", "고밀도 PU 밑창: 가볍고 충격 흡수가 뛰어나며 대전방지 기능이 영구 유지"]},
+  {"s": "BUS", "id": "BUS-372B", "name": "BUS-372B", "img": IMG + "BUS-372B/BUS-372B.png", "specs": [["분류", "PU 제전화 (Dissipative)"], ["표면저항", "10⁸~10⁹ Ω"], ["체적저항", "10⁶~10⁷ Ω"], ["밑창", "고분자 대전방지제를 혼합한 고밀도 ESD PU 일체형 밑창, 인젝션 몰딩"], ["사이즈", "225~280 mm (5 mm 단위), 290, 300 mm"], ["색상", "블랙, 화이트"], ["제작기간", "문의"], ["적용", "반도체·전자·제약·바이오·식품 산업, 연구소 등 실내화가 필요한 사업장"]], "feats": ["인체공학 설계로 장시간 착용해도 피로가 적음", "발등 통기성 망사로 땀이 차지 않고 쾌적함", "미드솔 쿠션과 바이오세라믹 처리로 피로·발냄새 감소", "고밀도 PU 밑창: 가볍고 충격 흡수가 뛰어나며 대전방지 기능이 영구 유지"]},
+  {"s": "CBS", "id": "CBS-501", "name": "CBS-501", "img": IMG + "CBS-501/CBS-501.png", "specs": [["분류", "PU 제전화 (Dissipative)"], ["표면저항", "10⁸~10⁹ Ω"], ["체적저항", "10⁶~10⁷ Ω"], ["사이즈", "220~280 mm (5 mm 단위), 290, 300, 310, 320 mm"], ["색상", "백색 (주문제작: 녹색, 네이비, 회색)"], ["제작기간", "7~10일"]]},
+  {"s": "CBS", "id": "CBS-502", "name": "CBS-502", "img": IMG + "CBS-502/CBS-502.png", "specs": [["분류", "PU 제전화 (Dissipative)"], ["표면저항", "10⁸~10⁹ Ω"], ["체적저항", "10⁶~10⁷ Ω"], ["사이즈", "220~280 mm (5 mm 단위), 290, 300, 310, 320 mm"], ["색상", "백색 (주문제작: 녹색, 네이비, 회색)"], ["제작기간", "7~10일"]]},
+  {"s": "CBS", "id": "CBS-502-01", "name": "CBS-502-01", "img": IMG + "CBS-502-01/CBS-502-01.png", "specs": [["분류", "PU 제전화 (Dissipative)"], ["표면저항", "10⁸~10⁹ Ω"], ["체적저항", "10⁶~10⁷ Ω"], ["사이즈", "220~280 mm (5 mm 단위), 290, 300, 310, 320 mm"], ["색상", "백색 (주문제작: 녹색, 네이비, 회색)"], ["제작기간", "7~10일"]]},
+  {"s": "CBS", "id": "CBS-503", "name": "CBS-503", "img": IMG + "CBS-503/CBS-503.png", "specs": [["분류", "PU 제전화 (Dissipative)"], ["표면저항", "10⁸~10⁹ Ω"], ["체적저항", "10⁶~10⁷ Ω"], ["사이즈", "220~280 mm (5 mm 단위), 290, 300, 310, 320 mm"], ["색상", "백색 (주문제작: 녹색, 네이비, 회색)"], ["제작기간", "7~10일"]]},
+  {"s": "CBS", "id": "CBS-513", "name": "CBS-513", "img": IMG + "CBS-513/CBS-513.png", "specs": [["분류", "PU 제전화 (Dissipative)"], ["표면저항", "10⁸~10⁹ Ω"], ["체적저항", "10⁶~10⁷ Ω"], ["사이즈", "220~280 mm (5 mm 단위), 290, 300, 310, 320 mm"], ["색상", "네이비 (주문제작: 백색, 녹색, 회색)"], ["제작기간", "7~10일"]]},
+  {"s": "SAFETY", "id": "BUS-401V", "name": "BUS-401V", "img": IMG + "BUS-401V/BUS-401V.png", "specs": [["분류", "ESD 안전화"], ["체적저항", "10⁶~10⁸ Ω"]], "parts": [["전면 갑피", "PU 합성 가죽 (타공) 1.4 mm"], ["토캡", "기계탄소 구조강 S50C 1.3 mm"], ["패딩", "PU 인터록 5 mm 라텍스"], ["중창", "바이오세라믹 ESD 섬유, 3 mm 라텍스"], ["뒷축 갑피", "PU 합성 가죽 1.4 mm"], ["밑창", "ESD PU (PU + 대전방지제), 논슬립 인젝션 몰딩"], ["앞코", "연질 PVC 1 mm"], ["깔창", "ESD 원단 쿠션 제전 깔창"]]},
+  {"s": "SAFETY", "id": "BUS-401", "name": "BUS-401", "img": IMG + "BUS-401/BUS-401.png", "specs": [["분류", "ESD 안전화"], ["표면저항", "10⁸~10⁹ Ω"], ["체적저항", "10⁷~10⁸ Ω"], ["밑창", "고분자 대전방지제를 혼합한 고밀도 ESD PU 일체형 밑창, 인젝션 몰딩"], ["사이즈", "225~280 mm (5 mm 단위), 290, 300 mm"], ["색상", "화이트, 블랙"], ["제작기간", "7~10일"]], "feats": ["기계탄소 구조강 토캡(Toe-cap)이 발을 보호", "미끄럼을 줄이는 인체공학 설계의 고밀도 PU 밑창", "인젝션 몰딩 밑창으로 내구성이 뛰어남"]},
+  {"s": "SAFETY", "id": "BUS-401SL", "name": "BUS-401SL", "img": IMG + "BUS-401SL/BUS-401SL.png", "specs": [["분류", "ESD 안전화"], ["표면저항", "10⁸~10⁹ Ω"], ["체적저항", "10⁷~10⁸ Ω"], ["밑창", "고분자 대전방지제를 혼합한 고밀도 ESD PU 일체형 밑창, 인젝션 몰딩"], ["사이즈", "225~280 mm (5 mm 단위), 290, 300 mm"], ["색상", "화이트, 블랙"], ["제작기간", "7~10일"]], "feats": ["기계탄소 구조강 토캡(Toe-cap)이 발을 보호", "미끄럼을 줄이는 인체공학 설계의 고밀도 PU 밑창", "인젝션 몰딩 밑창으로 내구성이 뛰어남"]},
+  {"s": "SAFETY", "id": "BUB-501", "name": "BUB-501", "img": IMG + "BUB-501/BUB-501.png", "specs": [["분류", "ESD 안전화"], ["표면저항", "10⁸~10⁹ Ω"], ["체적저항", "10⁷~10⁸ Ω"], ["밑창", "고분자 대전방지제를 혼합한 고밀도 ESD PU 일체형 밑창, 인젝션 몰딩"], ["사이즈", "225~280 mm (5 mm 단위), 290, 300 mm"], ["제작기간", "7~10일"]], "feats": ["기계탄소 구조강 토캡(Toe-cap)이 발을 보호", "미끄럼을 줄이는 인체공학 설계의 고밀도 PU 밑창", "인젝션 몰딩 밑창으로 내구성이 뛰어남"]},
+  {"s": "SLIPPER", "id": "BPU-439A", "name": "BPU-439A", "img": IMG + "BPU-439A/bpu439a_01.jpg", "desc": "뒷끈 없는 슬리퍼형. 자리 중심 작업, 탈의실과 라인을 자주 오가며 갈아 신는 공정에 맞습니다.", "specs": [["분류", "ESD 슬리퍼 (슬리퍼형)"], ["표면저항", "10⁸~10⁹ Ω"], ["체적저항", "10⁷~10⁸ Ω"], ["밑창", "고밀도 ESD PU 일체 성형 (인젝션 몰딩)"], ["쿠션", "뒤꿈치 PVC 에어백 미들솔"], ["갑피", "PU 합피 + 3 mm 스폰지·인터록 원단, 옆면 통기구"], ["사이즈", "220~300 mm (10 mm 단위, 9종)"], ["색상", "블랙, 그레이, 화이트"]], "feats": ["밑창이 한 덩어리라 발바닥에서 바닥까지 방전 경로가 끊기지 않음", "육각 패턴 돌기 인솔로 발이 앞으로 밀리지 않음", "가로 트레드 아웃솔로 젖은 바닥에서도 접지력 유지"]},
+  {"s": "SLIPPER", "id": "BPU-439AS", "name": "BPU-439AS", "img": IMG + "BPU-439AS/bpu439asw_01.jpg", "desc": "D링 뒷끈이 뒤꿈치를 잡아주는 샌들형. 계단·경사·이동이 많은 라인에서 벗겨지지 않습니다.", "specs": [["분류", "ESD 슬리퍼 (샌들형)"], ["표면저항", "10⁸~10⁹ Ω"], ["체적저항", "10⁷~10⁸ Ω"], ["뒷끈", "D링 조절끈 (벨크로 고정)"], ["밑창", "고밀도 ESD PU 일체 성형 (인젝션 몰딩)"], ["쿠션", "뒤꿈치 PVC 에어백 미들솔"], ["사이즈", "220~300 mm (10 mm 단위, 9종)"], ["색상", "블랙, 그레이, 화이트"]], "feats": ["끈이 발목 한 점을 조이지 않고 넓게 감겨 복숭아뼈가 배기지 않음", "발목 둘레에 맞춰 신는 사람이 직접 길이 조절", "가로 트레드 아웃솔로 젖은 바닥에서도 접지력 유지"]},
+  {"s": "SLIPPER", "id": "BPU-420", "name": "BPU-420", "img": IMG + "BPU-420/BPU-420.png", "specs": [["분류", "PU 제전 슬리퍼"], ["표면저항", "10⁸~10⁹ Ω"], ["체적저항", "10⁷~10⁸ Ω"], ["사이즈", "220~290 mm (10 mm 단위)"], ["제작기간", "7~10일"]], "feats": ["고분자 대전방지제를 혼합한 고밀도 ESD PU 일체형 밑창", "바닥 앞·뒤 리벳팅으로 확실한 통전", "인젝션 몰딩 밑창으로 내구성이 뛰어남"]},
+  {"s": "SLIPPER", "id": "BPU-426", "name": "BPU-426", "img": IMG + "BPU-426/BPU-426.png", "specs": [["분류", "PU 제전 슬리퍼"], ["표면저항", "10⁸~10⁹ Ω"], ["체적저항", "10⁷~10⁸ Ω"], ["사이즈", "220~290 mm (10 mm 단위)"], ["제작기간", "7~10일"]], "feats": ["고분자 대전방지제를 혼합한 고밀도 ESD PU 일체형 밑창", "바닥 앞·뒤 리벳팅으로 확실한 통전", "인젝션 몰딩 밑창으로 내구성이 뛰어남"]},
+  {"s": "SLIPPER", "id": "BPU-426S", "name": "BPU-426S", "img": IMG + "BPU-426S/BPU-426S.jpg", "specs": [["분류", "PU 제전 슬리퍼"]], "note": "상세 스펙은 정리 중입니다. 자세한 사양은 문의해 주세요."},
+  {"s": "BOOTS", "id": "BUB-513", "name": "BUB-513", "img": IMG + "BUB-513/BUB-513.png", "specs": [["분류", "ESD 안전 방진화 (Booties)"], ["표면저항", "10⁶ Ω"], ["사이즈", "225~280 mm (5 mm 단위), 290, 300 mm"], ["색상", "화이트, 블랙"]], "feats": ["아웃솔 내구성 강화로 마모 파티클 발생 억제", "오염에 강하고 세척이 쉬운 바닥 무늬", "탄성 좋은 아웃솔로 접지 면적이 넓어 미끄럼 방지", "돌출 조각 없는 표면으로 파티클 이동 차단"], "parts": [["갑피", "PU 합성 가죽 1.4 mm"], ["토캡", "스틸 토캡 604H 1.3 mm"], ["중창", "바이오세라믹 ESD 섬유, 3 mm 라텍스 / ESD PU"], ["안감", "PU 합성 가죽 1.4 mm"], ["아웃솔", "논슬립 몰드 밑창 (ESD 소재)"], ["부티", "ESD 폴리에스터 (5 mm 체크)"], ["지퍼", "5\" 나일론 지퍼, 니켈 슬라이더"], ["무릎·발목 밴드", "PP 고무 밴드 20 mm / 11 mm"]], "note": "ESD 시험: ACL Staticide 800, 26.4℃·상대습도 60%, 2.13×10⁶~4.31×10⁶ Ω (5회 평균) — 합격"},
+  {"s": "BOOTS", "id": "BUB-501S", "name": "BUB-501S", "img": IMG + "BUB-501S/BUB-501S.png", "specs": [["분류", "ESD 안전 방진화 (Booties)"], ["표면저항", "10⁷ Ω"], ["안전인증", "KCS 14-AV2CR-0107"], ["사이즈", "225~280 mm (5 mm 단위), 290, 300 mm"], ["색상", "화이트, 블랙"]], "parts": [["갑피", "PU 합성 가죽 1.4 mm"], ["토캡", "스틸 토캡 604H 1.3 mm"], ["벨크로", "20 mm 나일론 100%"], ["중창", "바이오세라믹 ESD 섬유, 3 mm 라텍스"], ["안감", "PU 합성 가죽 1.4 mm"], ["아웃솔", "ESD PU, 논슬립 인젝션 몰드"], ["부티", "ESD 폴리에스터 (5 mm 체크)"], ["지퍼", "5\" 나일론 지퍼, 니켈 슬라이더"], ["무릎·발목 밴드", "PP 고무 밴드 20 mm / 11 mm"]]},
+  {"s": "BOOTS", "id": "BUB-H3", "name": "BUB-H3", "img": IMG + "BUB-H3/BUB-H3.png", "specs": [["분류", "제전 부츠 (Static Dissipative Boots)"]], "parts": [["전면 갑피", "PU 합성 가죽 1.4 mm"], ["3중 에어망사", "ESD 원단 + 3겹 에어 메시 2.0 mm"], ["뒷축 갑피", "PU 합성 가죽 1.4 mm"], ["ESD 원단", "ESD R# FABRIC"], ["중창", "바이오세라믹 ESD 섬유, 3 mm 라텍스"], ["제전 깔창", "ESD 원사 + EVA 인솔"], ["밑창", "ESD PU (PU + 대전방지제), 인젝션 몰딩"], ["에어백", "압축 공기 튜브 (투명 PVC)"]]},
+  {"s": "BOOTS", "id": "BUB-380", "name": "BUB-380", "img": IMG + "BUB-380/BUB-380.jpg", "specs": [["분류", "PU 제전 부츠"]], "note": "상세 스펙은 정리 중입니다. 자세한 사양은 문의해 주세요."},
+  {"s": "BOOTS", "id": "BUB-381", "name": "BUB-381", "img": IMG + "BUB-381/BUB-381.jpg", "specs": [["분류", "PU 제전 부츠"]], "note": "상세 스펙은 정리 중입니다. 자세한 사양은 문의해 주세요."},
+  {"s": "BOOTS", "id": "BUB-382", "name": "BUB-382", "img": IMG + "BUB-382/BUB-382.jpg", "specs": [["분류", "PU 제전 부츠"]], "note": "상세 스펙은 정리 중입니다. 자세한 사양은 문의해 주세요."},
+  {"s": "BOOTS", "id": "BUB-392", "name": "BUB-392", "img": IMG + "BUB-392/BUB-392.jpg", "specs": [["분류", "PU 제전 부츠"]], "note": "상세 스펙은 정리 중입니다. 자세한 사양은 문의해 주세요."},
+  {"s": "BOOTS", "id": "BUB-501-B", "name": "BUB-501 (부츠)", "img": IMG + "BUB-501/BUB-501.jpg", "specs": [["분류", "PU 제전 부츠"]], "note": "상세 스펙은 정리 중입니다. 자세한 사양은 문의해 주세요."}
+];
+var CHAIRS = SHOES;   // 아래 동작 코드는 의자 페이지와 같음
+
+/* =====================================================================
+   아래는 동작 코드 — 수정할 필요 없음
+   ===================================================================== */
+(function(){
+  var N = CHAIRS.length;
+  var stage = document.getElementById('stage');
+  var dotsBox = document.getElementById('dots');
+  var specBox = document.getElementById('spec');
+  var hint = document.getElementById('hint');
+  var titleBox = document.getElementById('title');
+  var subBox = document.getElementById('subtitle');
+  var homeBtn = document.getElementById('homeBtn');
+  /* 인트로 라인업 이미지 (못 불러오면 회전 무대를 그대로 보여줌) */
+  var introImg = document.createElement('img');
+  introImg.className = 'introimg';
+  introImg.alt = '백두 ESD 클린룸 신발 라인업';
+  introImg.onerror = function(){ stage.classList.remove('withintro'); introImg.remove(); };
+  introImg.src = 'shoe_intropage.gif';   // 이 저장소에 파일이 없으면 회전 무대를 그대로 보여줌
+  stage.appendChild(introImg);
+  stage.classList.add('withintro');
+  var HINT = '옆으로 넘기면 다른 신발, 두 손가락으로 벌리면 확대';
+  var intro = true;                         // 처음엔 인트로 화면
+  document.body.classList.add('intro');
+  function exitIntro(){
+    if(!intro) return false;
+    intro = false;
+    document.body.classList.remove('intro');
+    hint.textContent = HINT;
+    return true;
+  }
+  var STEP = 0.66;                     // 이웃 신발 간격 (무대 너비 대비)
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  document.getElementById('telBtn').href = 'tel:' + CONFIG.tel.replace(/[^0-9+]/g,'');
+  document.getElementById('askBtn').href = CONFIG.askUrl;
+
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+
+  function sketch(){
+    var c = '#3d5a8a', f = '#dfe5ee';
+    return '<svg viewBox="0 0 240 160"><path d="M30 118 L34 64 Q36 50 52 52 L86 58 Q100 60 108 72 L124 92 Q134 102 152 104 L196 110 Q214 113 214 126 L214 132 L30 132 Z" fill="'+f+'" stroke="'+c+'" stroke-width="3" stroke-linejoin="round"/><path d="M26 132 L218 132 Q220 142 210 144 L34 144 Q24 142 26 132 Z" fill="'+c+'"/></svg>';
+  }
+
+  /* 슬라이드 만들기 */
+  var REP = N >= 5 ? 1 : Math.ceil(5 / N) + 1;   // 모델이 적으면 무대용으로 복제
+  var M = N * REP;
+  var slideData = [];
+  for(var r=0;r<REP;r++) for(var j=0;j<N;j++) slideData.push(j);
+  var slides = slideData.map(function(ci, i){
+    var ch = CHAIRS[ci];
+    var el = document.createElement('div');
+    el.className = 'slide';
+    el.setAttribute('role','group');
+    el.setAttribute('aria-label', ch.name);
+    el.innerHTML = '<div class="zm">' + (ch.img ? '<img alt="'+esc(ch.name)+'" data-src="'+esc(ch.img)+'" decoding="async">' : sketch()) + '</div>';
+    var im = el.querySelector('img');
+    if(im) im.onerror = function(){ im.outerHTML = sketch(); };
+    el.addEventListener('click', function(){ if(!moved && i!==cs) step(wrapM(i - cs)); });
+    el._o = null;
+    stage.appendChild(el);
+    return el;
+  });
+  var dots = CHAIRS.map(function(ch, i){
+    var b = document.createElement('button');
+    b.setAttribute('aria-label', ch.name + ' 보기');
+    b.onclick = function(){ unlock(); goChair(i); };
+    dotsBox.appendChild(b);
+    return b;
+  });
+
+  /* 시리즈 버튼 */
+  var serBox = document.getElementById('series');
+  var serBtns = SERIES.map(function(se){
+    var first = -1; for(var k=0;k<N;k++){ if(CHAIRS[k].s === se[0]){ first = k; break; } }
+    var b = document.createElement('button');
+    b.type = 'button'; b.setAttribute('role','tab'); b.textContent = se[1]; b.title = se[2];
+    b.onclick = function(){ unlock(); if(first >= 0) goChair(first); };
+    serBox.appendChild(b);
+    return b;
+  });
+
+  /* 시작 위치: ?id= 값 */
+  var q = new URLSearchParams(location.search).get('id');
+  var cur = 0;
+  if(q){ for(var k=0;k<N;k++){ if(CHAIRS[k].id.toLowerCase()===q.toLowerCase()){ cur=k; break; } } }
+  var cs = cur;   // 무대 위 가운데 슬라이드 번호
+  var drag = 0, moved = false;
+
+  function wrapM(o){ o = ((o % M) + M) % M; if(o > M/2) o -= M; return o; }
+
+  function layout(animate){
+    var W = stage.clientWidth;
+    slides.forEach(function(el, i){
+      var o = wrapM(i - cs);
+      var jump = el._o !== null && Math.abs(o - el._o) > 1.5;
+      el._o = o;
+      var pos = o + drag / (W * STEP);
+      var a = Math.abs(pos);
+      var scale = 1 - Math.min(a, 1.6) * 0.34;
+      var op = a > 1.55 ? 0 : 1 - Math.min(a, 1) * 0.5;
+      el.classList.toggle('anim', animate && !jump && !reduce);
+      el.style.transform = 'translateX(-50%) translateX(' + (pos * W * STEP) + 'px) scale(' + scale + ')';
+      el.style.opacity = op;
+      el.style.zIndex = String(100 - Math.round(a * 10));
+      el.setAttribute('aria-hidden', o === 0 ? 'false' : 'true');
+      el.classList.toggle('center', o === 0);
+      if(Math.abs(o) <= 2){ var li = el.querySelector('img[data-src]'); if(li){ li.src = li.getAttribute('data-src'); li.removeAttribute('data-src'); } }
+    });
+  }
+
+  function renderSpec(){
+    var ch = CHAIRS[cur];
+    if(intro){
+      specBox.innerHTML = '';
+      titleBox.textContent = CONFIG.introTitle;
+      subBox.textContent = CONFIG.introHint;
+      homeBtn.href = CONFIG.homeUrl;
+      document.title = CONFIG.introTitle + ' | 백두코퍼레이션';
+      serBtns.forEach(function(b){ b.classList.remove('on'); b.setAttribute('aria-selected','false'); });
+      return;
+    }
+    homeBtn.href = CONFIG.homeUrl;
+    var rows = (ch.specs||[]).map(function(r){
+      if(!r || r[1] == null || r[1] === '') return '';
+      return '<tr><th scope="row">'+esc(r[0])+'</th><td>'+esc(r[1])+'</td></tr>';
+    }).join('');
+    var inSer = CHAIRS.filter(function(x){ return x.s === ch.s; });
+    var pos = inSer.indexOf(ch) + 1;
+    var se = SERIES.filter(function(x){ return x[0] === ch.s; })[0] || [ch.s, ch.s, ''];
+    var ft = (ch.feats && ch.feats.length) ? '<h3 class="sub">특징</h3><ul class="feat">' +
+      ch.feats.map(function(t){ return '<li>'+esc(t)+'</li>'; }).join('') + '</ul>' : '';
+    var pt = (ch.parts && ch.parts.length) ? '<h3 class="sub">재질 구성</h3><table class="tbl parts"><tbody>' +
+      ch.parts.map(function(p){ return '<tr><th scope="row">'+esc(p[0])+'</th><td>'+esc(p[1])+'</td></tr>'; }).join('') + '</tbody></table>' : '';
+    specBox.innerHTML =
+      '<div class="head"><h2>기본 스펙</h2><span class="count">'+esc(se[1])+' · '+pos+' / '+inSer.length+'</span></div>' +
+      (ch.desc ? '<p class="desc">'+esc(ch.desc)+'</p>' : '') +
+      '<table class="tbl"><tbody>'+rows+'</tbody></table>' + ft + pt +
+      (ch.note ? '<p class="pnote">'+esc(ch.note)+'</p>' : '') +
+      '<p class="note">'+esc(CONFIG.note)+'</p>';
+    dots.forEach(function(d, i){ d.classList.toggle('on', i === cur); d.setAttribute('aria-current', i===cur?'true':'false'); });
+    serBtns.forEach(function(b, i){ var on = SERIES[i][0] === ch.s; b.classList.toggle('on', on); b.setAttribute('aria-selected', on?'true':'false'); });
+    titleBox.textContent = ch.name;
+    subBox.textContent = CONFIG.specHint;
+    document.title = ch.name + ' 스펙 | 백두코퍼레이션';
+    try{ history.replaceState(null, '', location.pathname + '?id=' + encodeURIComponent(ch.id)); }catch(e){}
+  }
+
+  var fadeTimer;
+  /* ---------- 넘김 효과음 '딸깍' (음원 파일 없이 합성) ---------- */
+  var ac = null, noise = null, lastTick = 0;
+  var soundOn = true;
+  try{ if(localStorage.getItem('bdShoeSound') === 'off') soundOn = false; }catch(_){}
+  var sndBtn = document.getElementById('snd');
+  function syncSndBtn(){
+    sndBtn.setAttribute('aria-pressed', soundOn ? 'true' : 'false');
+    sndBtn.setAttribute('aria-label', soundOn ? '넘김 소리 끄기' : '넘김 소리 켜기');
+  }
+  syncSndBtn();
+  sndBtn.onclick = function(){
+    soundOn = !soundOn; syncSndBtn();
+    try{ localStorage.setItem('bdShoeSound', soundOn ? 'on' : 'off'); }catch(_){}
+    if(soundOn){ unlock(); tick(0); }
+  };
+  function unlock(){
+    if(!soundOn) return;
+    try{
+      if(!ac){
+        var AC = window.AudioContext || window.webkitAudioContext; if(!AC) return;
+        ac = new AC();
+        var len = Math.floor(ac.sampleRate * 0.03);
+        noise = ac.createBuffer(1, len, ac.sampleRate);
+        var d = noise.getChannelData(0);
+        for(var i=0;i<len;i++) d[i] = (Math.random()*2-1) * Math.pow(1 - i/len, 3);
+      }
+      if(ac.state === 'suspended') ac.resume();
+    }catch(_){ ac = null; }
+  }
+  var VOLUME = 1.0;               // 딸깍 음량 (0.3 작게 ~ 1.0 크게)
+  var bus = null;
+  function tick(when){            // when: 지금부터 몇 초 뒤
+    if(!soundOn || !ac) return;
+    if(!bus){                     // 크게 내도 찢어지지 않게 리미터 통과
+      var comp = ac.createDynamicsCompressor();
+      comp.threshold.value = -6; comp.knee.value = 0; comp.ratio.value = 20;
+      comp.attack.value = 0.001; comp.release.value = 0.05;
+      bus = ac.createGain(); bus.gain.value = VOLUME;
+      bus.connect(comp); comp.connect(ac.destination);
+    }
+    var t = ac.currentTime + (when || 0);
+    // 1) 딸깍의 '딱' — 짧은 잡음
+    var src = ac.createBufferSource(); src.buffer = noise;
+    var bp = ac.createBiquadFilter(); bp.type = 'bandpass';
+    bp.frequency.value = 2600 + Math.random()*500; bp.Q.value = 2.5;
+    var g = ac.createGain();
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(3.0, t + 0.002);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + 0.035);
+    src.connect(bp); bp.connect(g); g.connect(bus);
+    src.start(t); src.stop(t + 0.045);
+    // 2) 딸깍의 '깍' — 짧은 몸통 울림 (체감 음량 보강)
+    var o = ac.createOscillator(); o.type = 'triangle';
+    o.frequency.setValueAtTime(1500, t);
+    o.frequency.exponentialRampToValueAtTime(700, t + 0.025);
+    var og = ac.createGain();
+    og.gain.setValueAtTime(0.0001, t);
+    og.gain.exponentialRampToValueAtTime(0.9, t + 0.002);
+    og.gain.exponentialRampToValueAtTime(0.0001, t + 0.03);
+    o.connect(og); og.connect(bus);
+    o.start(t); o.stop(t + 0.04);
+  }
+  stage.addEventListener('pointerdown', unlock);
+  document.addEventListener('touchend', unlock, {passive:true});   // 아이폰 소리 잠금 해제용
+
+  function fadeRender(){
+    if(reduce){ renderSpec(); return; }
+    specBox.classList.add('fade'); titleBox.classList.add('fade'); subBox.classList.add('fade');
+    clearTimeout(fadeTimer);
+    fadeTimer = setTimeout(function(){ renderSpec(); specBox.classList.remove('fade'); titleBox.classList.remove('fade'); subBox.classList.remove('fade'); }, 180);
+  }
+  function step(d, px){          // 무대를 d칸 이동
+    if(d !== 0) resetZoom(false);
+    if(d !== 0) tick(0);        // 한 칸 넘어갈 때 '딸깍' 한 번
+    var wasIntro = exitIntro();
+    drag = 0;
+    if(d === 0){ layout(true); if(wasIntro) fadeRender(); return; }
+    cs = ((cs + d) % M + M) % M;
+    cur = slideData[cs];
+    layout(true);
+    fadeRender();
+  }
+
+  function goChair(ci){      // 버튼: 해당 모델이 있는 가장 가까운 슬라이드로
+    var best = 0, bestAbs = 1e9;
+    for(var i=0;i<M;i++){ if(slideData[i]===ci){ var d = wrapM(i - cs); if(Math.abs(d) < bestAbs){ bestAbs = Math.abs(d); best = d; } } }
+    step(best);
+  }
+
+  document.getElementById('prev').onclick = function(e){ e.stopPropagation(); unlock(); step(-1); };
+  document.getElementById('next').onclick = function(e){ e.stopPropagation(); unlock(); step(1); };
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'ArrowLeft') step(-1);
+    if(e.key === 'ArrowRight') step(1);
+  });
+
+  /* ---------- 확대 (두 손가락 벌리기 · 두 번 탭) ---------- */
+  var ZMAX = 4, z = 1, tx = 0, ty = 0;
+  var zBtn = document.getElementById('zreset');
+  function zoomEl(){ return slides[cs].querySelector('.zm'); }
+  function applyZoom(ease){
+    var el = zoomEl();
+    el.classList.toggle('ease', !!ease && !reduce);
+    el.style.transform = 'translate(' + tx + 'px,' + ty + 'px) scale(' + z + ')';
+    stage.classList.toggle('zoomed', z > 1.001);
+  }
+  function clampPan(){
+    var el = zoomEl(), W = el.offsetWidth, H = el.offsetHeight;
+    tx = Math.min(0, Math.max(W * (1 - z), tx));
+    ty = Math.min(0, Math.max(H * (1 - z), ty));
+  }
+  function resetZoom(ease){
+    if(z === 1 && tx === 0 && ty === 0) return;
+    z = 1; tx = 0; ty = 0; applyZoom(ease);
+  }
+  function local(x, y){ var r = zoomEl().parentElement.getBoundingClientRect(); return { x: x - r.left, y: y - r.top }; }
+  zBtn.onclick = function(e){ e.stopPropagation(); resetZoom(true); };
+  stage.addEventListener('gesturestart', function(e){ e.preventDefault(); });   // 아이폰 화면 전체 확대 방지
+
+  /* ---------- 손가락 입력 (넘기기 / 확대 / 이동) ---------- */
+  var pts = {}, cnt = 0;
+  var mode = null;            // 'swipe' | 'pinch' | 'pan'
+  var sx = 0, sy = 0, axis = null, pid = null;
+  var p0 = null, pinch0 = null, lastTap = { t: 0, x: 0, y: 0 };
+
+  function two(){ var k = Object.keys(pts); return [pts[k[0]], pts[k[1]]]; }
+  function startPan(e){ mode = 'pan'; pid = e.pointerId; try{ stage.setPointerCapture(pid); }catch(_){} p0 = { x: e.clientX, y: e.clientY, tx: tx, ty: ty }; }
+  function startPinch(){
+    var q = two(), m = local((q[0].x + q[1].x) / 2, (q[0].y + q[1].y) / 2);
+    pinch0 = { d: Math.hypot(q[0].x - q[1].x, q[0].y - q[1].y) || 1, z: z, cx: (m.x - tx) / z, cy: (m.y - ty) / z };
+    mode = 'pinch';
+    if(drag !== 0){ drag = 0; layout(true); }
+    stage.classList.remove('dragging');
+  }
+
+  stage.addEventListener('pointerdown', function(e){
+    if(e.target.closest('.arrow,.zreset')) return;
+    pts[e.pointerId] = { x: e.clientX, y: e.clientY }; cnt = Object.keys(pts).length;
+    if(cnt === 2){ Object.keys(pts).forEach(function(k){ try{ stage.setPointerCapture(+k); }catch(_){} }); startPinch(); moved = true; return; }
+    if(cnt > 2) return;
+    moved = false;
+    if(z > 1.001){ startPan(e); return; }
+    mode = 'swipe'; sx = e.clientX; sy = e.clientY; axis = null; pid = e.pointerId;
+  });
+
+  stage.addEventListener('pointermove', function(e){
+    if(!pts[e.pointerId]) return;
+    pts[e.pointerId] = { x: e.clientX, y: e.clientY };
+    if(mode === 'pinch' && cnt >= 2){
+      var q = two(), m = local((q[0].x + q[1].x) / 2, (q[0].y + q[1].y) / 2);
+      var d = Math.hypot(q[0].x - q[1].x, q[0].y - q[1].y);
+      z = Math.min(ZMAX, Math.max(0.8, pinch0.z * d / pinch0.d));
+      tx = m.x - z * pinch0.cx; ty = m.y - z * pinch0.cy;
+      applyZoom(false); return;
+    }
+    if(mode === 'pan' && e.pointerId === pid){
+      var mx = e.clientX - p0.x, my = e.clientY - p0.y;
+      if(Math.abs(mx) + Math.abs(my) > 6) moved = true;
+      tx = p0.tx + mx; ty = p0.ty + my; clampPan(); applyZoom(false); return;
+    }
+    if(mode !== 'swipe' || e.pointerId !== pid) return;
+    var dx = e.clientX - sx, dy = e.clientY - sy;
+    if(!axis){
+      if(Math.abs(dx) < 8 && Math.abs(dy) < 8) return;
+      axis = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y';
+      if(axis === 'x'){ try{ stage.setPointerCapture(pid); }catch(_){} stage.classList.add('dragging'); }
+    }
+    if(axis !== 'x') return;
+    moved = true;
+    drag = dx;
+    layout(false);
+  });
+
+  function end(e){
+    if(!pts[e.pointerId]) return;
+    delete pts[e.pointerId]; cnt = Object.keys(pts).length;
+
+    if(mode === 'pinch'){
+      if(cnt >= 2) return;
+      if(z < 1.05){ resetZoom(true); mode = null; }
+      else {
+        clampPan(); applyZoom(true);
+        if(cnt === 1){ var k = Object.keys(pts)[0]; startPan({ pointerId: +k, clientX: pts[k].x, clientY: pts[k].y }); }
+        else mode = null;
+      }
+      setTimeout(function(){ moved = false; }, 0);
+      return;
+    }
+    if(mode === 'pan'){
+      if(cnt === 0){
+        if(!moved) doubleTap(e);
+        mode = null; setTimeout(function(){ moved = false; }, 0);
+      }
+      return;
+    }
+    if(mode === 'swipe' && e.pointerId === pid){
+      stage.classList.remove('dragging');
+      if(axis === 'x'){
+        var th = stage.clientWidth * 0.12;
+        var W = stage.clientWidth * STEP;
+        if(drag < -th) step(1, W - Math.abs(drag));
+        else if(drag > th) step(-1, W - Math.abs(drag));
+        else { drag = 0; layout(true); }
+        setTimeout(function(){ moved = false; }, 0);
+      } else if(!axis){
+        doubleTap(e);
+      }
+      axis = null; mode = null; pid = null;
+    }
+  }
+  function doubleTap(e){          // 가운데 신발을 두 번 탭하면 2.5배 / 원래 크기
+    var r = slides[cs].getBoundingClientRect();
+    if(e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom){ lastTap.t = 0; return; }
+    var now = Date.now();
+    if(now - lastTap.t < 320 && Math.hypot(e.clientX - lastTap.x, e.clientY - lastTap.y) < 30){
+      lastTap.t = 0;
+      if(z > 1.001) resetZoom(true);
+      else { var p = local(e.clientX, e.clientY); z = 2.5; tx = p.x - z * p.x; ty = p.y - z * p.y; clampPan(); applyZoom(true); }
+    } else lastTap = { t: now, x: e.clientX, y: e.clientY };
+  }
+  stage.addEventListener('pointerup', end);
+  stage.addEventListener('pointercancel', end);
+  stage.addEventListener('pointerup', function(e){   // 인트로에서 터치만 해도 신발 페이지로
+    if(intro && !e.target.closest('.arrow,.zreset')){ exitIntro(); fadeRender(); }
+  });
+  window.addEventListener('resize', function(){ layout(false); });
+
+  if(N < 2){ document.getElementById('prev').hidden = true; document.getElementById('next').hidden = true; hint.hidden = true; }
+  layout(false);
+  renderSpec();
+})();
+</script>
+</body>
+</html>
